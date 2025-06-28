@@ -26,7 +26,6 @@
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/user/menu">Xem Menu</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/user/order-history">Lịch Sử Mua Hàng</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/user/cart">Giỏ Hàng</a></li>
-                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/user/order-tracking">Theo Dõi Đơn Hàng</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/logout">Đăng Xuất</a></li>
             </ul>
         </div>

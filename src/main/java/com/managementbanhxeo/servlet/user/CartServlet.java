@@ -17,7 +17,7 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("text/plain;charset=UTF-8");
         User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
             int userId = user.getUserId();
@@ -25,11 +25,10 @@ public class CartServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             orderDAO.addToCart(userId, menuId, quantity);
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write("{\"success\": true, \"message\": \"Thêm vào giỏ hàng thành công!\"}");
+            response.getWriter().write("Thêm vào giỏ hàng thành công!");
             System.out.println("Thêm món ID " + menuId + " vào giỏ hàng cho user ID " + userId);
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"success\": false, \"message\": \"Vui lòng đăng nhập!\"}");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Vui lòng đăng nhập!");
         }
     }
 
