@@ -28,17 +28,24 @@ public class UserDAO {
         return user;
     }
 
-    public void registerUser(String username, String password, String email) {
+    public boolean registerUser(String username, String password, String email) {
         String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, email);
-            ps.executeUpdate();
-            System.out.println("Đăng ký thành công cho: " + username);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Đăng ký thành công cho: " + username);
+                return true;
+            } else {
+                System.out.println("Đăng ký thất bại cho: " + username + " - Không có dòng nào được thêm.");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Lỗi: Đăng ký thất bại - " + e.getMessage());
+            return false;
         }
     }
 

@@ -26,9 +26,15 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-        userDAO.registerUser(username, password, email);
-        request.getSession().setAttribute("message", "Đăng ký thành công, chuyển hướng đến đăng nhập!");
-        System.out.println("Đăng ký thành công, chuyển hướng đến login!");
-        response.sendRedirect(request.getContextPath() + "/login");
+
+        boolean isRegistered = userDAO.registerUser(username, password, email);
+        if (isRegistered) {
+            request.getSession().setAttribute("message", "Đăng ký thành công, chuyển hướng đến đăng nhập!");
+            System.out.println("Đăng ký thành công cho username: " + username);
+            response.sendRedirect(request.getContextPath() + "/login");
+        } else {
+            request.getSession().setAttribute("error", "Đăng ký thất bại. Username hoặc email có thể đã tồn tại hoặc có lỗi!");
+            response.sendRedirect(request.getContextPath() + "/register");
+        }
     }
 }

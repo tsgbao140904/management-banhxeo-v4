@@ -17,13 +17,22 @@
     <div class="register-container mx-auto p-4 border rounded shadow-sm bg-white">
         <h2 class="text-center mb-4 text-primary">Đăng Ký</h2>
 
-        <!-- Hiển thị thông báo -->
+        <!-- Hiển thị thông báo thành công -->
         <c:if test="${not empty sessionScope.message}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${sessionScope.message}
-                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">×</span>
             </div>
             <c:remove var="message" scope="session"/>
+        </c:if>
+
+        <!-- Hiển thị thông báo lỗi -->
+        <c:if test="${not empty sessionScope.error}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${sessionScope.error}
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">×</span>
+            </div>
+            <c:remove var="error" scope="session"/>
         </c:if>
 
         <form action="${pageContext.request.contextPath}/register" method="post">
