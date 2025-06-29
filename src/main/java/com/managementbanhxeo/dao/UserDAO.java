@@ -92,18 +92,24 @@ public class UserDAO {
         return user;
     }
 
-    public void addUser(User user) {
+    public void addUser(User user) throws SQLException {
         String sql = "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getEmail());
-            ps.setString(4, user.getRole());
-            ps.executeUpdate();
-            System.out.println("Thêm người dùng thành công!");
-        } catch (SQLException e) {
-            System.out.println("Lỗi: Thêm người dùng thất bại - " + e.getMessage());
+            String role = user.getRole();
+            if (role == null || (!role.equals("ADMIN") && !role.equals("USER"))) {
+                role = "USER"; // Mặc định là USER nếu role không hợp lệ
+            }
+            ps.setString(4, role);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Thêm người dùng thành công!");
+            } else {
+                throw new SQLException("Thêm người dùng thất bại: Không có hàng nào bị ảnh hưởng.");
+            }
         }
     }
 
@@ -114,7 +120,11 @@ public class UserDAO {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getEmail());
-            ps.setString(4, user.getRole());
+            String role = user.getRole();
+            if (role == null || (!role.equals("ADMIN") && !role.equals("USER"))) {
+                role = "USER"; // Mặc định là USER nếu role không hợp lệ
+            }
+            ps.setString(4, role);
             ps.setInt(5, user.getUserId());
             ps.executeUpdate();
             System.out.println("Cập nhật người dùng thành công!");
@@ -123,15 +133,41 @@ public class UserDAO {
         }
     }
 
-    public void deleteUser(int userId) {
-        String sql = "DELETE FROM users WHERE user_id = ?";
-        try (Connection conn = DBConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            ps.executeUpdate();
-            System.out.println("Xóa người dùng thành công!");
+    public void deleteUser(int userId) throws SQLException {
+        String sqlDeleteOrders = "DELETE FROM orders WHERE user_id = ?";
+        String sqlDeleteUser = "DELETE FROM users WHERE user_id = ?";
+        Connection conn = null;
+        try {
+            conn = DBConfig.getConnection();
+            conn.setAutoCommit(false); // Bắt đầu transaction
+
+            // Xóa các đơn hàng liên quan trước
+            try (PreparedStatement psOrders = conn.prepareStatement(sqlDeleteOrders)) {
+                psOrders.setInt(1, userId);
+                psOrders.executeUpdate();
+            }
+
+            // Xóa người dùng
+            try (PreparedStatement psUser = conn.prepareStatement(sqlDeleteUser)) {
+                psUser.setInt(1, userId);
+                int rowsAffected = psUser.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new SQLException("Xóa người dùng thất bại: Không tìm thấy user_id " + userId);
+                }
+                System.out.println("Xóa người dùng thành công!");
+            }
+
+            conn.commit(); // Commit transaction
         } catch (SQLException e) {
-            System.out.println("Lỗi: Xóa người dùng thất bại - " + e.getMessage());
+            if (conn != null) {
+                conn.rollback(); // Rollback nếu có lỗi
+            }
+            throw e;
+        } finally {
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
         }
     }
 }

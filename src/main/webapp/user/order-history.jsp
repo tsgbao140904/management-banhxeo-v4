@@ -15,6 +15,8 @@
         .container { max-width: 1200px; margin-top: 30px; }
         .table { background: #ffffff; border-radius: 10px; }
         .details-table { margin-top: 10px; font-size: 0.9em; }
+        .alert { position: relative; }
+        .alert .close-btn { position: absolute; right: 10px; top: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -36,6 +38,23 @@
 </nav>
 <div class="container">
     <h2 class="text-center mb-4">Lịch Sử Mua Hàng</h2>
+
+    <!-- Hiển thị thông báo -->
+    <c:if test="${not empty sessionScope.message}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                ${sessionScope.message}
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <c:remove var="message" scope="session"/>
+    </c:if>
+    <c:if test="${not empty sessionScope.error}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${sessionScope.error}
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <c:remove var="error" scope="session"/>
+    </c:if>
+
     <table class="table table-striped">
         <thead class="table-dark">
         <tr>
@@ -84,5 +103,16 @@
     </nav>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.style.display = 'none', 500);
+        });
+    }, 3000);
+</script>
 </body>
 </html>

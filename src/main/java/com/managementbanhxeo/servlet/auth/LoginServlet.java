@@ -29,6 +29,7 @@ public class LoginServlet extends HttpServlet {
         User user = userDAO.getUserByUsernameAndPassword(username, password);
         if (user != null) {
             request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("message", "Đăng nhập thành công!");
             System.out.println("Đăng nhập thành công cho: " + username);
             if ("ADMIN".equals(user.getRole())) {
                 response.sendRedirect(request.getContextPath() + "/admin/dashboard");

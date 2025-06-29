@@ -24,14 +24,17 @@ public class CheckoutServlet extends HttpServlet {
             String note = request.getParameter("note") != null ? request.getParameter("note") : "";
             try {
                 orderDAO.checkout(userId, totalAmount, note);
+                request.getSession().setAttribute("message", "Thanh toán thành công, chờ admin duyệt!");
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write("Thanh toán thành công, chờ admin duyệt!");
                 System.out.println("Thanh toán thành công cho user ID " + userId + " với tổng " + totalAmount + " và ghi chú: " + note);
             } catch (Exception e) {
+                request.getSession().setAttribute("error", "Thanh toán thất bại: " + e.getMessage());
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write("Thanh toán thất bại: " + e.getMessage());
                 System.out.println("Lỗi thanh toán cho user ID " + userId + ": " + e.getMessage());
             }
+            response.sendRedirect(request.getContextPath() + "/user/cart");
         } else {
             response.sendRedirect(request.getContextPath() + "/login");
         }

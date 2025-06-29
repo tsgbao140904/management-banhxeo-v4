@@ -14,6 +14,8 @@
         .sidebar a:hover, .sidebar a.active { background-color: #34495e; color: #ffffff; }
         .content { margin-left: 250px; padding: 20px; }
         .details-table { margin-top: 10px; font-size: 0.9em; }
+        .alert { position: relative; }
+        .alert .close-btn { position: absolute; right: 10px; top: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -45,14 +47,14 @@
     <c:if test="${not empty sessionScope.message}">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
                 ${sessionScope.message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
         </div>
         <c:remove var="message" scope="session"/>
     </c:if>
     <c:if test="${not empty sessionScope.error}">
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 ${sessionScope.error}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
         </div>
         <c:remove var="error" scope="session"/>
     </c:if>
@@ -158,6 +160,16 @@
             }
         });
     });
+
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.style.display = 'none', 500);
+        });
+    }, 3000);
 </script>
 </body>
 </html>

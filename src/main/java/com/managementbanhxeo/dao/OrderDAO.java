@@ -319,4 +319,53 @@ public class OrderDAO {
         result.put("expense", expense);
         return result;
     }
+
+    // Bổ sung phương thức xóa đơn hàng
+    public void deleteOrder(int orderId) {
+        String sql = "DELETE FROM orders WHERE order_id = ?";
+        try (Connection conn = DBConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Xóa đơn hàng thành công với order ID: " + orderId);
+            } else {
+                System.out.println("Xóa đơn hàng thất bại: Không tìm thấy order ID " + orderId);
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi: Xóa đơn hàng thất bại - " + e.getMessage());
+        }
+    }
+
+    // Bổ sung phương thức lấy đơn hàng theo ID
+    public Order getOrderById(int orderId) {
+        Order order = null;
+        String sql = "SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.user_id WHERE o.order_id = ?";
+        try (Connection conn = DBConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    order = new Order(
+                            rs.getInt("order_id"),
+                            rs.getInt("user_id"),
+                            rs.getDouble("total_amount"),
+                            rs.getString("status"),
+                            rs.getTimestamp("order_date"),
+                            rs.getString("username"),
+                            getOrderDetails(orderId),
+                            rs.getString("note")
+                    );
+                }
+            }
+            if (order != null) {
+                System.out.println("Lấy đơn hàng thành công với order ID: " + orderId);
+            } else {
+                System.out.println("Không tìm thấy đơn hàng với order ID: " + orderId);
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi: Lấy đơn hàng thất bại - " + e.getMessage());
+        }
+        return order;
+    }
 }

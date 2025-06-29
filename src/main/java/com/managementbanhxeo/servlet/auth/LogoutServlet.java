@@ -14,6 +14,7 @@ public class LogoutServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         request.getSession().invalidate();
+        request.getSession().setAttribute("message", "Đăng xuất thành công!");
         System.out.println("Đăng xuất thành công!");
         response.sendRedirect(request.getContextPath() + "/login");
     }

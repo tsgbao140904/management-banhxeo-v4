@@ -40,7 +40,15 @@
         <c:forEach var="menu" items="${menus}">
             <div class="col">
                 <div class="card h-100">
-                    <img src="${pageContext.request.contextPath}/uploads/${menu.imageUrl}" class="card-img-top" alt="${menu.name}">
+                    <c:choose>
+                        <c:when test="${not empty menu.imageUrl}">
+                            <img src="${pageContext.request.contextPath}/${menu.imageUrl}" class="card-img-top" alt="${menu.name}"
+                                 onerror="this.src='${pageContext.request.contextPath}/images/default.jpg'; this.onerror=null;">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="${pageContext.request.contextPath}/images/default.jpg" class="card-img-top" alt="Hình ảnh mặc định">
+                        </c:otherwise>
+                    </c:choose>
                     <div class="card-body">
                         <h5 class="card-title">${menu.name}</h5>
                         <p class="card-text">${menu.price} VNĐ</p>
@@ -65,6 +73,21 @@
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'menuId=' + menuId + '&quantity=' + quantity
             }).then(response => response.text()).then(data => alert(data));
+        });
+    });
+
+    document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const menuId = button.getAttribute('data-menu-id');
+            fetch('${pageContext.request.contextPath}/user/like-menu?menuId=' + menuId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        button.textContent = `❤️ (${data.likes})`;
+                    } else {
+                        alert(data.message);
+                    }
+                });
         });
     });
 </script>

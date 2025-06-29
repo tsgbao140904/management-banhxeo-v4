@@ -18,16 +18,18 @@ public class OrderManagementServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
-        int page = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
-        int pageSize = 10; // 10 đơn hàng mỗi trang
+        // Bổ sung xử lý xóa đơn hàng
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            orderDAO.deleteOrder(orderId);
+            request.getSession().setAttribute("message", "Xóa đơn hàng thành công!");
+            response.sendRedirect(request.getContextPath() + "/admin/order-management");
+            return;
+        }
 
-        List<com.managementbanhxeo.model.Order> orders = orderDAO.getOrders(page, pageSize);
-        int totalItems = orderDAO.getTotalOrders();
-        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
-
+        List<com.managementbanhxeo.model.Order> orders = orderDAO.getAllOrders();
         request.setAttribute("orders", orders);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("/admin/order-management.jsp").forward(request, response);
     }
 
@@ -39,7 +41,8 @@ public class OrderManagementServlet extends HttpServlet {
             int orderId = Integer.parseInt(request.getParameter("orderId"));
             String status = request.getParameter("status");
             orderDAO.updateOrderStatus(orderId, status);
-            response.sendRedirect(request.getContextPath() + "/admin/order-management?page=" + request.getParameter("page"));
+            request.getSession().setAttribute("message", "Cập nhật trạng thái đơn hàng thành công!");
+            response.sendRedirect(request.getContextPath() + "/admin/order-management");
         }
     }
 }

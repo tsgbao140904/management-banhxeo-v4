@@ -14,6 +14,8 @@
         .card { border: none; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         .card:hover { transform: translateY(-5px); transition: transform 0.2s; }
         .total { font-size: 1.5rem; font-weight: bold; }
+        .alert { position: relative; }
+        .alert .close-btn { position: absolute; right: 10px; top: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -35,6 +37,23 @@
 </nav>
 <div class="container">
     <h2 class="mb-4 text-primary">Giỏ Hàng</h2>
+
+    <!-- Hiển thị thông báo -->
+    <c:if test="${not empty sessionScope.message}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                ${sessionScope.message}
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <c:remove var="message" scope="session"/>
+    </c:if>
+    <c:if test="${not empty sessionScope.error}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${sessionScope.error}
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        <c:remove var="error" scope="session"/>
+    </c:if>
+
     <div class="card">
         <div class="card-body">
             <table class="table table-striped">
@@ -78,7 +97,7 @@
             fetch('${pageContext.request.contextPath}/user/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'total=' + total + '&note=' + encodeURIComponent(note) // Sửa lỗi từ '¬e=' thành '&note='
+                body: 'total=' + total + '&note=' + encodeURIComponent(note)
             }).then(response => {
                 if (response.ok) {
                     alert('Thanh toán thành công, chờ admin duyệt!');
@@ -89,6 +108,16 @@
             });
         }
     }
+
+    // Tự động ẩn thông báo sau 3 giây
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.style.display = 'none', 500);
+        });
+    }, 3000);
 </script>
 </body>
 </html>
