@@ -60,6 +60,8 @@ ALTER TABLE menu ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
 DESCRIBE orders;
 
+ALTER TABLE order_details DROP FOREIGN KEY order_details_ibfk_1;
+ALTER TABLE order_details ADD FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE;
 
 -- Cập nhật dữ liệu menu với danh mục
 INSERT INTO menu (name, price, image_url, category) VALUES
