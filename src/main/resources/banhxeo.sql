@@ -55,7 +55,11 @@ ALTER TABLE order_details
 
 ALTER TABLE orders ADD COLUMN note VARCHAR(255);
 ALTER TABLE orders MODIFY COLUMN status VARCHAR(20);
+
+ALTER TABLE menu ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
 DESCRIBE orders;
+
 
 -- Cập nhật dữ liệu menu với danh mục
 INSERT INTO menu (name, price, image_url, category) VALUES
