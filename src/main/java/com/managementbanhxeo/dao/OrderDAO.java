@@ -160,6 +160,52 @@ public class OrderDAO {
         return total;
     }
 
+    public List<Order> getOrders(int page, int pageSize) {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.user_id ORDER BY o.order_date DESC LIMIT ? OFFSET ?";
+        int offset = (page - 1) * pageSize;
+        try (Connection conn = DBConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, pageSize);
+            ps.setInt(2, offset);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order(
+                            rs.getInt("order_id"),
+                            rs.getInt("user_id"),
+                            rs.getDouble("total_amount"),
+                            rs.getString("status"),
+                            rs.getTimestamp("order_date"),
+                            rs.getString("username"),
+                            getOrderDetails(rs.getInt("order_id")),
+                            rs.getString("note") // Thêm ánh xạ note
+                    );
+                    orders.add(order);
+                }
+            }
+            System.out.println("Lấy danh sách đơn hàng theo trang thành công!");
+        } catch (SQLException e) {
+            System.out.println("Lỗi: Lấy danh sách đơn hàng theo trang thất bại - " + e.getMessage());
+        }
+        return orders;
+    }
+
+    public int getTotalOrders() {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM orders";
+        try (Connection conn = DBConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+            System.out.println("Đếm tổng số đơn hàng thành công: " + total);
+        } catch (SQLException e) {
+            System.out.println("Lỗi: Đếm tổng số đơn hàng thất bại - " + e.getMessage());
+        }
+        return total;
+    }
+
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
         String sql = "SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.user_id ORDER BY o.order_date DESC";

@@ -6,18 +6,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MenuDAO {
     public List<Menu> getAllMenus() {
         List<Menu> menus = new ArrayList<>();
-        String sql = "SELECT * FROM menu";
+        String sql = "SELECT * FROM menu ORDER BY created_at DESC";
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Menu menu = new Menu(rs.getInt("menu_id"), rs.getString("name"), rs.getDouble("price"), rs.getString("image_url"), rs.getInt("likes"), rs.getString("category"));
+                Menu menu = new Menu(rs.getInt("menu_id"), rs.getString("name"), rs.getDouble("price"),
+                        rs.getString("image_url"), rs.getInt("likes"), rs.getString("category"));
+                menu.setCreatedAt(rs.getTimestamp("created_at"));
                 menus.add(menu);
             }
             System.out.println("Lấy danh sách menu thành công!");
@@ -27,31 +32,53 @@ public class MenuDAO {
         return menus;
     }
 
+    public Set<String> getAllCategories() {
+        Set<String> categories = new TreeSet<>();
+        String sql = "SELECT DISTINCT category FROM menu WHERE category IS NOT NULL";
+        try (Connection conn = DBConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String category = rs.getString("category");
+                if (category != null && !category.trim().isEmpty()) {
+                    categories.add(category);
+                }
+            }
+            System.out.println("Lấy danh sách danh mục thành công!");
+        } catch (SQLException e) {
+            System.out.println("Lỗi: Lấy danh sách danh mục thất bại - " + e.getMessage());
+        }
+        return categories;
+    }
+
     public List<Menu> getMenus(String search, String category, int page, int pageSize) {
         List<Menu> menus = new ArrayList<>();
         String sql = "SELECT * FROM menu WHERE 1=1";
-        if (search != null && !search.isEmpty()) {
+        if (search != null && !search.trim().isEmpty()) {
             sql += " AND name LIKE ?";
         }
-        if (category != null && !category.isEmpty()) {
+        if (category != null && !category.trim().isEmpty()) {
             sql += " AND category = ?";
         }
-        sql += " LIMIT ? OFFSET ?";
+        sql += " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             int paramIndex = 1;
-            if (search != null && !search.isEmpty()) {
-                ps.setString(paramIndex++, "%" + search + "%");
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + search.trim() + "%");
             }
-            if (category != null && !category.isEmpty()) {
-                ps.setString(paramIndex++, category);
+            if (category != null && !category.trim().isEmpty()) {
+                ps.setString(paramIndex++, category.trim());
             }
             ps.setInt(paramIndex++, pageSize);
             ps.setInt(paramIndex, (page - 1) * pageSize);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                menus.add(new Menu(rs.getInt("menu_id"), rs.getString("name"), rs.getDouble("price"),
-                        rs.getString("image_url"), rs.getInt("likes"), rs.getString("category")));
+                Menu menu = new Menu(rs.getInt("menu_id"), rs.getString("name"), rs.getDouble("price"),
+                        rs.getString("image_url"), rs.getInt("likes"), rs.getString("category"));
+                menu.setCreatedAt(rs.getTimestamp("created_at"));
+                menus.add(menu);
             }
         } catch (SQLException e) {
             System.out.println("Lỗi: Lấy danh sách menu với bộ lọc thất bại - " + e.getMessage());
@@ -62,20 +89,20 @@ public class MenuDAO {
     public int getTotalMenus(String search, String category) {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM menu WHERE 1=1";
-        if (search != null && !search.isEmpty()) {
+        if (search != null && !search.trim().isEmpty()) {
             sql += " AND name LIKE ?";
         }
-        if (category != null && !category.isEmpty()) {
+        if (category != null && !category.trim().isEmpty()) {
             sql += " AND category = ?";
         }
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             int paramIndex = 1;
-            if (search != null && !search.isEmpty()) {
-                ps.setString(paramIndex++, "%" + search + "%");
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + search.trim() + "%");
             }
-            if (category != null && !category.isEmpty()) {
-                ps.setString(paramIndex, category);
+            if (category != null && !category.trim().isEmpty()) {
+                ps.setString(paramIndex, category.trim());
             }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -88,7 +115,7 @@ public class MenuDAO {
     }
 
     public void addMenu(Menu menu) {
-        String sql = "INSERT INTO menu (name, price, image_url, likes, category) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO menu (name, price, image_url, likes, category, created_at) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, menu.getName());
@@ -96,6 +123,7 @@ public class MenuDAO {
             ps.setString(3, menu.getImageUrl());
             ps.setInt(4, menu.getLikes());
             ps.setString(5, menu.getCategory());
+            ps.setTimestamp(6, new Timestamp(menu.getCreatedAt().getTime()));
             ps.executeUpdate();
             System.out.println("Thêm menu thành công!");
         } catch (SQLException e) {
@@ -121,8 +149,12 @@ public class MenuDAO {
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, menuId);
-            ps.executeUpdate();
-            System.out.println("Xóa món ID " + menuId + " thành công!");
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Xóa món ID " + menuId + " thành công!");
+            } else {
+                System.out.println("Không tìm thấy món ID " + menuId + " để xóa!");
+            }
         } catch (SQLException e) {
             System.out.println("Lỗi: Xóa menu thất bại - " + e.getMessage());
         }
@@ -136,7 +168,9 @@ public class MenuDAO {
             ps.setInt(1, menuId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                menu = new Menu(rs.getInt("menu_id"), rs.getString("name"), rs.getDouble("price"), rs.getString("image_url"), rs.getInt("likes"), rs.getString("category"));
+                menu = new Menu(rs.getInt("menu_id"), rs.getString("name"), rs.getDouble("price"),
+                        rs.getString("image_url"), rs.getInt("likes"), rs.getString("category"));
+                menu.setCreatedAt(rs.getTimestamp("created_at"));
             }
         } catch (SQLException e) {
             System.out.println("Lỗi: Lấy menu theo ID thất bại - " + e.getMessage());

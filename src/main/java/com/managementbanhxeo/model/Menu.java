@@ -1,5 +1,7 @@
 package com.managementbanhxeo.model;
 
+import java.util.Date;
+
 public class Menu {
     private int menuId;
     private String name;
@@ -8,6 +10,7 @@ public class Menu {
     private int likes;
     private int quantity;
     private String category;
+    private Date createdAt; // Thêm thuộc tính createdAt
 
     public Menu() {}
 
@@ -18,6 +21,7 @@ public class Menu {
         this.likes = likes;
         this.quantity = 0; // Mặc định quantity là 0
         this.category = category;
+        this.createdAt = new Date(); // Mặc định createdAt là thời gian hiện tại
     }
 
     public Menu(int menuId, String name, double price, String imageUrl, int likes, String category) {
@@ -28,6 +32,7 @@ public class Menu {
         this.likes = likes;
         this.quantity = 0; // Mặc định quantity là 0
         this.category = category;
+        this.createdAt = new Date(); // Mặc định createdAt là thời gian hiện tại
     }
 
     // Getters and setters
@@ -45,4 +50,6 @@ public class Menu {
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+    public Date getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 }

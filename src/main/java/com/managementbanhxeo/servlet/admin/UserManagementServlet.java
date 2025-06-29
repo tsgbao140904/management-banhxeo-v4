@@ -27,12 +27,14 @@ public class UserManagementServlet extends HttpServlet {
                 request.setAttribute("editUser", user);
                 request.getRequestDispatcher("/admin/edit-user.jsp").forward(request, response);
             } else {
-                response.sendRedirect(request.getContextPath() + "/admin/user-management?error=notfound");
+                request.getSession().setAttribute("error", "Người dùng không tồn tại!");
+                response.sendRedirect(request.getContextPath() + "/admin/user-management");
             }
             return;
         } else if ("delete".equals(action)) {
             int userId = Integer.parseInt(request.getParameter("userId"));
             userDAO.deleteUser(userId);
+            request.getSession().setAttribute("message", "Xóa người dùng thành công!");
             response.sendRedirect(request.getContextPath() + "/admin/user-management");
             return;
         }
@@ -57,21 +59,31 @@ public class UserManagementServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         if ("add".equals(action)) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String email = request.getParameter("email");
-            String role = request.getParameter("role");
-            User user = new User(username, password, role, email);
-            userDAO.addUser(user);
+            try {
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                String email = request.getParameter("email");
+                String role = request.getParameter("role");
+                User user = new User(username, password, role, email);
+                userDAO.addUser(user);
+                request.getSession().setAttribute("message", "Thêm người dùng thành công!");
+            } catch (Exception e) {
+                request.getSession().setAttribute("error", "Thêm người dùng thất bại: " + e.getMessage());
+            }
             response.sendRedirect(request.getContextPath() + "/admin/user-management");
         } else if ("update".equals(action)) {
-            int userId = Integer.parseInt(request.getParameter("userId"));
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String email = request.getParameter("email");
-            String role = request.getParameter("role");
-            User user = new User(userId, username, password, role, email, new Date());
-            userDAO.updateUser(user);
+            try {
+                int userId = Integer.parseInt(request.getParameter("userId"));
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                String email = request.getParameter("email");
+                String role = request.getParameter("role");
+                User user = new User(userId, username, password, role, email, new Date());
+                userDAO.updateUser(user);
+                request.getSession().setAttribute("message", "Cập nhật người dùng thành công!");
+            } catch (Exception e) {
+                request.getSession().setAttribute("error", "Cập nhật người dùng thất bại: " + e.getMessage());
+            }
             response.sendRedirect(request.getContextPath() + "/admin/user-management");
         }
     }
