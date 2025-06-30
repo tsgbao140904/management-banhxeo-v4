@@ -34,7 +34,7 @@ public class CheckoutServlet extends HttpServlet {
                 response.getWriter().write("Thanh toán thất bại: " + e.getMessage());
                 System.out.println("Lỗi thanh toán cho user ID " + userId + ": " + e.getMessage());
             }
-            response.sendRedirect(request.getContextPath() + "/user/cart");
+            response.sendRedirect(request.getContextPath() + "/user/cart"); // Quay lại giỏ hàng để cập nhật
         } else {
             response.sendRedirect(request.getContextPath() + "/login");
         }

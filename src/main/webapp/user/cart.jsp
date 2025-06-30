@@ -349,7 +349,9 @@
                         <td>${item.price} VNĐ</td>
                         <td>${item.quantity * item.price} VNĐ</td>
                         <c:set var="total" value="${total + (item.quantity * item.price)}" />
-                        <td><button class="btn btn-danger btn-sm">Xóa</button></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.menuId})">Xóa</button>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -371,15 +373,34 @@
             fetch('${pageContext.request.contextPath}/user/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'total=' + total + '¬e=' + encodeURIComponent(note)
+                body: 'total=' + total + '&note=' + encodeURIComponent(note) // Sửa cú pháp
             }).then(response => {
                 if (response.ok) {
                     alert('Thanh toán thành công, chờ admin duyệt!');
                     window.location.href = '${pageContext.request.contextPath}/user/dashboard';
                 } else {
-                    alert('Thanh toán thất bại!');
+                    response.text().then(text => alert('Thanh toán thất bại: ' + text));
                 }
-            });
+            }).catch(error => alert('Lỗi kết nối: ' + error));
+        }
+    }
+
+    function deleteItem(menuId) {
+        if (confirm('Xác nhận xóa món này khỏi giỏ hàng?')) {
+            fetch('${pageContext.request.contextPath}/user/cart/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'menuId=' + menuId
+            }).then(response => {
+                if (response.ok) {
+                    response.text().then(text => {
+                        alert(text);
+                        location.reload(); // Tải lại trang để cập nhật giỏ hàng
+                    });
+                } else {
+                    alert('Xóa thất bại!');
+                }
+            }).catch(error => alert('Lỗi kết nối: ' + error));
         }
     }
 

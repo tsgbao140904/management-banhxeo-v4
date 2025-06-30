@@ -65,12 +65,18 @@ public class OrderDAO {
             conn = DBConfig.getConnection();
             conn.setAutoCommit(false);
 
+            // Kiểm tra tổng tiền trong giỏ hàng trước khi checkout
+            double cartTotal = calculateCartTotal(conn, userId);
+            if (Math.abs(cartTotal - totalAmount) > 0.01) { // Kiểm tra sai số nhỏ
+                throw new SQLException("Tổng tiền không khớp với giỏ hàng: " + cartTotal + " vs " + totalAmount);
+            }
+
             String sqlOrder = "INSERT INTO orders (user_id, total_amount, status, order_date, note) VALUES (?, ?, ?, NOW(), ?)";
             try (PreparedStatement psOrder = conn.prepareStatement(sqlOrder, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 psOrder.setInt(1, userId);
                 psOrder.setDouble(2, totalAmount);
-                psOrder.setString(3, "CHOXACNHAN"); // Giá trị cố định, đảm bảo độ dài phù hợp
-                psOrder.setString(4, note != null ? note : ""); // Thêm note, mặc định rỗng nếu null
+                psOrder.setString(3, "CHOXACNHAN");
+                psOrder.setString(4, note != null ? note : "");
                 psOrder.executeUpdate();
 
                 int orderId = 0;
@@ -88,11 +94,24 @@ public class OrderDAO {
                 try { conn.rollback(); System.out.println("Rollback thành công do lỗi: " + e.getMessage()); } catch (SQLException ex) { System.out.println("Rollback thất bại: " + ex.getMessage()); }
             }
             System.out.println("Lỗi: Thanh toán thất bại - " + e.getMessage());
+            throw new RuntimeException("Thanh toán thất bại: " + e.getMessage()); // Ném lỗi để servlet xử lý
         } finally {
             if (conn != null) {
                 try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { System.out.println("Đóng kết nối thất bại: " + e.getMessage()); }
             }
         }
+    }
+
+    private double calculateCartTotal(Connection conn, int userId) throws SQLException {
+        double total = 0.0;
+        String sql = "SELECT SUM(m.price * c.quantity) as total FROM menu m JOIN cart c ON m.menu_id = c.menu_id WHERE c.user_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) total = rs.getDouble("total");
+            }
+        }
+        return total;
     }
 
     private void moveCartToOrderDetails(Connection conn, int userId, int orderId) throws SQLException {
@@ -131,7 +150,7 @@ public class OrderDAO {
                             rs.getTimestamp("order_date"),
                             rs.getString("username"),
                             getOrderDetails(rs.getInt("order_id")),
-                            rs.getString("note") // Thêm ánh xạ note
+                            rs.getString("note")
                     );
                     orders.add(order);
                 }
@@ -178,7 +197,7 @@ public class OrderDAO {
                             rs.getTimestamp("order_date"),
                             rs.getString("username"),
                             getOrderDetails(rs.getInt("order_id")),
-                            rs.getString("note") // Thêm ánh xạ note
+                            rs.getString("note")
                     );
                     orders.add(order);
                 }
@@ -221,7 +240,7 @@ public class OrderDAO {
                         rs.getTimestamp("order_date"),
                         rs.getString("username"),
                         getOrderDetails(rs.getInt("order_id")),
-                        rs.getString("note") // Thêm ánh xạ note
+                        rs.getString("note")
                 );
                 orders.add(order);
             }
@@ -320,7 +339,6 @@ public class OrderDAO {
         return result;
     }
 
-    // Bổ sung phương thức xóa đơn hàng
     public void deleteOrder(int orderId) {
         String sql = "DELETE FROM orders WHERE order_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -337,7 +355,6 @@ public class OrderDAO {
         }
     }
 
-    // Bổ sung phương thức lấy đơn hàng theo ID
     public Order getOrderById(int orderId) {
         Order order = null;
         String sql = "SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.user_id WHERE o.order_id = ?";
@@ -367,5 +384,23 @@ public class OrderDAO {
             System.out.println("Lỗi: Lấy đơn hàng thất bại - " + e.getMessage());
         }
         return order;
+    }
+
+    // Phương thức mới để xóa item khỏi giỏ hàng
+    public void deleteCartItem(int userId, int menuId) {
+        String sql = "DELETE FROM cart WHERE user_id = ? AND menu_id = ?";
+        try (Connection conn = DBConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, menuId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Xóa món ID " + menuId + " khỏi giỏ hàng của user ID " + userId + " thành công");
+            } else {
+                System.out.println("Xóa món ID " + menuId + " thất bại: Không tìm thấy trong giỏ hàng");
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi: Xóa món khỏi giỏ hàng thất bại - " + e.getMessage());
+        }
     }
 }
