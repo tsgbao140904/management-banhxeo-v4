@@ -6,10 +6,215 @@
     <title>Đăng Nhập</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fa; }
-        .login-container { max-width: 400px; margin-top: 100px; }
-        .alert { position: relative; }
-        .alert .close-btn { position: absolute; right: 10px; top: 5px; cursor: pointer; }
+        /* Body with soft blue gradient */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #343a40;
+            animation: bgGlow 8s infinite ease-in-out;
+        }
+
+        /* Background glow animation */
+        @keyframes bgGlow {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Container with subtle shine */
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ced4da;
+            margin: 20px 0;
+            animation: containerShine 6s infinite;
+        }
+
+        /* Container shine animation */
+        @keyframes containerShine {
+            0% { box-shadow: 0 0 15px rgba(0, 123, 255, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(0, 123, 255, 0.2); }
+            100% { box-shadow: 0 0 15px rgba(0, 123, 255, 0.1); }
+        }
+
+        /* Header with soft blue */
+        .login-container h2 {
+            text-align: center;
+            color: #007bff;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 3px rgba(0, 123, 255, 0.1);
+        }
+
+        /* Form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Label with gentle highlight */
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            text-shadow: 0 0 2px rgba(0, 123, 255, 0.1);
+        }
+
+        /* Input with blue glow */
+        .form-control {
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            color: #343a40;
+            background: rgba(255, 255, 255, 0.9);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            height: 50px;
+        }
+
+        /* Input focus effect */
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+
+        /* Placeholder styling */
+        .form-control::placeholder {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+
+        /* Button with blue gradient */
+        .btn {
+            background: linear-gradient(45deg, #007bff, #00b4d8);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button hover effect */
+        .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Button active effect */
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Link styling */
+        a {
+            color: #007bff;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        /* Link hover effect */
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Alert styling */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            animation: fadeIn 0.5s ease;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.1);
+        }
+
+        /* Alert success */
+        .alert-success {
+            background: #28a745;
+            color: #fff;
+        }
+
+        /* Alert danger */
+        .alert-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        /* Close button styling */
+        .close-btn {
+            font-size: 1.3rem;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        /* Close button hover */
+        .close-btn:hover {
+            color: #007bff;
+        }
+
+        /* Animation for alerts */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            .login-container h2 {
+                font-size: 1.8rem;
+            }
+            .form-control {
+                padding: 10px;
+                height: 45px;
+            }
+            .btn {
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Decorative subtle glow */
+        .login-container::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
+            animation: glowPulse 4s infinite;
+            z-index: -1;
+        }
+
+        /* Glow pulse animation */
+        @keyframes glowPulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
@@ -21,14 +226,14 @@
         <c:if test="${not empty sessionScope.message}">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${sessionScope.message}
-                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">×</span>
             </div>
             <c:remove var="message" scope="session"/>
         </c:if>
         <c:if test="${not empty requestScope.error}">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     ${requestScope.error}
-                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">×</span>
             </div>
         </c:if>
 
