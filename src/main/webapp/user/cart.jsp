@@ -240,7 +240,7 @@
                         <td>
                             <div class="quantity-controls">
                                 <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="decrease">-</button>
-                                <input type="number" class="quantity-input" id="quantity-${item.menuId}" value="${item.quantity}" readonly>
+                                <input type="number" class="quantity-input" id="quantity-${item.menuId}" value="${item.quantity}" min="0">
                                 <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="increase">+</button>
                             </div>
                         </td>
@@ -259,43 +259,27 @@
                 <textarea class="form-control" id="note" name="note" rows="3" placeholder="Nhập ghi chú cho đơn hàng (ví dụ: giao hàng nhanh, yêu cầu đặc biệt...)"></textarea>
             </div>
             <p class="total text-success" id="grand-total">Tổng cộng: ${total} VNĐ</p>
-            <button class="btn btn-success" onclick="checkout(${total})">Thanh Toán</button>
+            <c:if test="${total <= 0}">
+                <p class="text-danger">Giỏ hàng trống, không thể thanh toán!</p>
+                <button class="btn btn-success" onclick="checkout()" disabled>Thanh Toán</button>
+            </c:if>
+            <c:if test="${total > 0}">
+                <button class="btn btn-success" onclick="checkout()">Thanh Toán</button>
+            </c:if>
         </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    let debounceTimeout;
+    let currentTotal = ${total}; // Lưu tổng tiền hiện tại
 
-    async function addToCart(menuId, quantity = 1) {
-        try {
-            console.log("Gửi request thêm món: menuId=" + menuId + ", quantity=" + quantity);
-            const response = await fetch('${pageContext.request.contextPath}/user/cart', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'action=add&menuId=' + menuId + '&quantity=' + quantity
-            });
-            const text = await response.text();
-            console.log("Phản hồi từ server: status=" + response.status + ", text=" + text);
-            if (response.ok) {
-                alert(text || "Thêm món thành công nhưng không có thông báo từ server!");
-                location.reload(); // Reload để cập nhật giỏ hàng
-            } else {
-                alert('Thêm món thất bại: ' + (text || 'Không nhận được thông tin lỗi từ server'));
-            }
-        } catch (error) {
-            console.error("Lỗi khi thêm món: ", error);
-            alert('Lỗi kết nối: ' + error.message);
-        }
-    }
-
-    async function checkout(total) {
+    async function checkout() {
         const note = document.getElementById('note').value;
-        if (confirm('Xác nhận thanh toán ' + total + ' VNĐ?\nGhi chú: ' + (note || 'Không có'))) {
+        if (confirm('Xác nhận thanh toán ' + currentTotal + ' VNĐ?\nGhi chú: ' + (note || 'Không có'))) {
             const response = await fetch('${pageContext.request.contextPath}/user/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'total=' + total + '&note=' + encodeURIComponent(note)
+                body: 'total=' + currentTotal + '&note=' + encodeURIComponent(note)
             });
             if (response.ok) {
                 alert('Thanh toán thành công, chờ admin duyệt!');
@@ -334,27 +318,28 @@
                 body: 'action=update&menuId=' + menuId + '&quantity=' + newQuantity
             });
             if (response.ok) {
-                const newQty = parseInt(await response.text());
+                const newQty = await response.text();
                 const quantityInput = document.getElementById('quantity-' + menuId);
                 const totalElement = document.getElementById('total-' + menuId);
                 const price = parseFloat(document.querySelector('#total-' + menuId).closest('tr').cells[2].textContent) || 0;
-                if (newQty === 0) {
-                    location.reload();
-                } else {
-                    quantityInput.value = newQty;
-                    totalElement.textContent = (newQty * price) + ' VNĐ';
-                    updateGrandTotal();
+                quantityInput.value = newQty;
+                totalElement.textContent = (newQty * price) + ' VNĐ';
+                updateGrandTotal();
+                if (parseInt(newQty) <= 0) {
+                    deleteItem(menuId); // Tự động xóa nếu số lượng về 0
                 }
             } else {
-                const text = await response.text();
-                alert('Cập nhật thất bại: ' + text);
+                alert('Cập nhật thất bại!');
+                location.reload(); // Tải lại trang nếu thất bại để đồng bộ
             }
         } catch (error) {
-            alert('Lỗi kết nối: ' + error);
+            alert('Lỗi kết nối: ' + error.message);
+            location.reload(); // Tải lại trang nếu có lỗi
         }
     }
 
     function debounce(func, delay) {
+        let debounceTimeout;
         return function (...args) {
             clearTimeout(debounceTimeout);
             debounceTimeout = setTimeout(() => func.apply(this, args), delay);
@@ -366,19 +351,20 @@
             const menuId = e.target.getAttribute('data-menu-id');
             const action = e.target.getAttribute('data-action');
             const quantityInput = document.getElementById('quantity-' + menuId);
-            let newQuantity = parseInt(quantityInput.value);
+            let newQuantity = parseInt(quantityInput.value) || 0;
             if (action === 'decrease') newQuantity--;
             else if (action === 'increase') newQuantity++;
             if (newQuantity >= 0) await updateQuantity(menuId, newQuantity);
-        }, 50));
+            else quantityInput.value = 0; // Đảm bảo không âm
+        }, 50)); // Tăng delay để tránh xung đột
     });
 
     function updateGrandTotal() {
         let grandTotal = 0;
-        document.querySelectorAll('.table tbody tr').forEach(row => {
-            const total = parseFloat(row.querySelector('td:nth-child(4)').textContent) || 0;
-            grandTotal += total;
+        document.querySelectorAll('[id^="total-"]').forEach(element => {
+            grandTotal += parseFloat(element.textContent) || 0;
         });
+        currentTotal = grandTotal;
         document.getElementById('grand-total').textContent = 'Tổng cộng: ' + grandTotal + ' VNĐ';
     }
 

@@ -33,7 +33,7 @@ public class CartServlet extends HttpServlet {
                 try {
                     orderDAO.addToCart(userId, menuId, quantity);
                     response.setStatus(HttpServletResponse.SC_OK);
-                    String msg = "Thêm vào giỏ hàng thành công! Món: " + menuId + ", Quantity: " + quantity ;
+                    String msg = "Thêm vào giỏ hàng thành công! Món: " + menuId + ", Quantity: " + quantity;
                     response.getWriter().write(msg);
                     System.out.println(msg);
                 } catch (Exception e) {
