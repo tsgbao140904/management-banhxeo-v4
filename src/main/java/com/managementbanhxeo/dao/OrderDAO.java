@@ -15,21 +15,54 @@ import java.util.Map;
 
 public class OrderDAO {
     public void addToCart(int userId, int menuId, int quantity) {
-        String sql = "INSERT INTO cart (user_id, menu_id, quantity) VALUES (?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE quantity = VALUES(quantity)";
-        try (Connection conn = DBConfig.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            ps.setInt(2, menuId);
-            ps.setInt(3, quantity);
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Thêm hoặc cập nhật giỏ hàng thành công cho user ID " + userId + ", món ID " + menuId + " với số lượng " + quantity);
-            } else {
-                System.out.println("Thêm hoặc cập nhật giỏ hàng thất bại cho user ID " + userId + ", món ID " + menuId);
+        Connection conn = null;
+        try {
+            conn = DBConfig.getConnection();
+            conn.setAutoCommit(false);
+
+            // Kiểm tra số lượng hiện tại trong giỏ hàng
+            String checkSql = "SELECT quantity FROM cart WHERE user_id = ? AND menu_id = ?";
+            int currentQuantity = 0;
+            try (PreparedStatement checkPs = conn.prepareStatement(checkSql)) {
+                checkPs.setInt(1, userId);
+                checkPs.setInt(2, menuId);
+                try (ResultSet rs = checkPs.executeQuery()) {
+                    if (rs.next()) {
+                        currentQuantity = rs.getInt("quantity");
+                    }
+                }
             }
+
+            int newQuantity = currentQuantity + quantity;
+            if (newQuantity < 0) {
+                throw new IllegalArgumentException("Số lượng không thể âm!");
+            }
+
+            // Cập nhật hoặc thêm mới
+            String sql = "INSERT INTO cart (user_id, menu_id, quantity) VALUES (?, ?, ?) " +
+                    "ON DUPLICATE KEY UPDATE quantity = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, userId);
+                ps.setInt(2, menuId);
+                ps.setInt(3, newQuantity);
+                ps.setInt(4, newQuantity); // Giá trị mới để cập nhật
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Thêm hoặc cập nhật giỏ hàng thành công cho user ID " + userId + ", món ID " + menuId + " với số lượng " + newQuantity);
+                } else {
+                    System.out.println("Thêm hoặc cập nhật giỏ hàng thất bại cho user ID " + userId + ", món ID " + menuId);
+                }
+            }
+            conn.commit();
         } catch (SQLException e) {
+            if (conn != null) {
+                try { conn.rollback(); } catch (SQLException ex) { System.out.println("Rollback thất bại: " + ex.getMessage()); }
+            }
             System.out.println("Lỗi: Thêm hoặc cập nhật giỏ hàng thất bại - " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { System.out.println("Đóng kết nối thất bại: " + e.getMessage()); }
+            }
         }
     }
 
