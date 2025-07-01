@@ -120,6 +120,32 @@ public class MenuManagementServlet extends HttpServlet {
                 request.getSession().setAttribute("error", "Cập nhật món ăn thất bại: " + e.getMessage());
             }
             response.sendRedirect(request.getContextPath() + "/admin/menu-management");
+        } else if ("addCategory".equals(action)) {
+            try {
+                String categoryName = request.getParameter("categoryName");
+                if (categoryName != null && !categoryName.trim().isEmpty()) {
+                    menuDAO.addCategory(categoryName.trim());
+                    request.getSession().setAttribute("message", "Thêm danh mục '" + categoryName + "' thành công!");
+                } else {
+                    request.getSession().setAttribute("error", "Tên danh mục không được để trống!");
+                }
+            } catch (Exception e) {
+                request.getSession().setAttribute("error", "Thêm danh mục thất bại: " + e.getMessage());
+            }
+            response.sendRedirect(request.getContextPath() + "/admin/menu-management");
+        } else if ("deleteCategory".equals(action)) {
+            try {
+                String categoryName = request.getParameter("categoryName");
+                if (categoryName != null && !categoryName.trim().isEmpty()) {
+                    menuDAO.deleteCategory(categoryName.trim());
+                    request.getSession().setAttribute("message", "Xóa danh mục '" + categoryName + "' thành công!");
+                } else {
+                    request.getSession().setAttribute("error", "Tên danh mục không được để trống!");
+                }
+            } catch (Exception e) {
+                request.getSession().setAttribute("error", "Xóa danh mục thất bại: " + e.getMessage());
+            }
+            response.sendRedirect(request.getContextPath() + "/admin/menu-management");
         }
     }
 

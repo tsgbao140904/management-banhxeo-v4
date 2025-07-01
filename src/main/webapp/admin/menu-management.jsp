@@ -8,24 +8,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Body with soft blue gradient */
         body {
             font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6);
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             min-height: 100vh;
             display: flex;
             color: #343a40;
-            animation: bgGlow 8s infinite ease-in-out;
         }
 
-        /* Background glow animation */
-        @keyframes bgGlow {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-
-        /* Sidebar styling */
         .sidebar {
             width: 250px;
             position: fixed;
@@ -35,11 +25,6 @@
             background: linear-gradient(135deg, #4682b4, #5a9bd4);
             padding-top: 20px;
             box-shadow: 2px 0 10px rgba(70, 130, 180, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar:hover {
-            transform: scale(1.02);
         }
 
         .sidebar a {
@@ -47,51 +32,39 @@
             padding: 10px 15px;
             text-decoration: none;
             display: block;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease;
         }
 
         .sidebar a:hover, .sidebar a.active {
             background-color: #34495e;
             color: #ffffff;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
         }
 
         .sidebar .text-center h4 {
             font-size: 1.5rem;
             margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
 
-        /* Content styling */
         .content {
             margin-left: 250px;
             padding: 20px;
             flex: 1;
         }
 
-        /* Form styling */
         .form-control, .form-select {
             border: 2px solid #ced4da;
             border-radius: 8px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .form-control:focus, .form-select:focus {
             border-color: #007bff;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
-            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
         }
 
-        /* Table styling */
         .table {
             background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .table:hover {
-            transform: translateY(-2px);
         }
 
         .table th {
@@ -109,13 +82,11 @@
             border-top: 1px solid #dee2e6;
         }
 
-        /* Details table styling */
         .details-table {
             margin-top: 10px;
             font-size: 0.9em;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 5px;
-            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
         }
 
         .details-table td {
@@ -123,15 +94,11 @@
             border: none;
         }
 
-        /* Alert styling */
         .alert {
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
             position: relative;
-            animation: fadeIn 0.5s ease;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.1);
         }
 
         .alert-success {
@@ -148,19 +115,16 @@
             font-size: 1.3rem;
             color: #fff;
             cursor: pointer;
-            transition: color 0.3s ease;
         }
 
         .close-btn:hover {
             color: #007bff;
         }
 
-        /* Button styling */
         .btn {
             padding: 8px 15px;
             font-weight: 600;
             border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn-primary, .btn-info {
@@ -170,7 +134,6 @@
 
         .btn-primary:hover, .btn-info:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
         }
 
         .btn-warning {
@@ -180,7 +143,6 @@
 
         .btn-warning:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
         }
 
         .btn-danger {
@@ -190,16 +152,8 @@
 
         .btn-danger:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
         }
 
-        /* Animation for alerts */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Pagination styling */
         .pagination {
             justify-content: center;
         }
@@ -208,21 +162,17 @@
             color: #007bff;
             background: #fff;
             border: 1px solid #dee2e6;
-            transition: all 0.3s ease;
         }
 
         .page-item.active .page-link {
             background: #007bff;
             color: #fff;
-            border-color: #007bff;
         }
 
         .page-item .page-link:hover {
             background: #e9ecef;
-            color: #0056b3;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .sidebar {
                 width: 200px;
@@ -240,79 +190,6 @@
                 font-size: 0.9rem;
             }
         }
-
-        /* Decorative subtle glow */
-        .table::before {
-            content: '';
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
-            animation: glowPulse 4s infinite;
-            z-index: -1;
-            border-radius: 10px;
-        }
-
-        /* Glow pulse animation */
-        @keyframes glowPulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-
-        /* Placeholder styles for 150 lines */
-        .dummy1 { color: #007bff; } /* Line 101 */
-        .dummy2 { background: #e9ecef; } /* Line 102 */
-        .dummy3 { border: 1px solid #dee2e6; } /* Line 103 */
-        .dummy4 { padding: 5px; } /* Line 104 */
-        .dummy5 { margin: 10px; } /* Line 105 */
-        .dummy6 { font-size: 14px; } /* Line 106 */
-        .dummy7 { height: 30px; } /* Line 107 */
-        .dummy8 { width: 50%; } /* Line 108 */
-        .dummy9 { opacity: 0.9; } /* Line 109 */
-        .dummy10 { transition: all 0.5s; } /* Line 110 */
-        .dummy11 { position: relative; } /* Line 111 */
-        .dummy12 { top: 5px; } /* Line 112 */
-        .dummy13 { left: 10px; } /* Line 113 */
-        .dummy14 { right: 15px; } /* Line 114 */
-        .dummy15 { bottom: 20px; } /* Line 115 */
-        .dummy16 { z-index: 10; } /* Line 116 */
-        .dummy17 { background-color: #f8f9fa; } /* Line 117 */
-        .dummy18 { color: #6c757d; } /* Line 118 */
-        .dummy19 { border-color: #ced4da; } /* Line 119 */
-        .dummy20 { font-family: 'Arial'; } /* Line 120 */
-        .dummy21 { text-align: center; } /* Line 121 */
-        .dummy22 { line-height: 1.5; } /* Line 122 */
-        .dummy23 { letter-spacing: 1px; } /* Line 123 */
-        .dummy24 { word-spacing: 2px; } /* Line 124 */
-        .dummy25 { text-transform: uppercase; } /* Line 125 */
-        .dummy26 { text-decoration: underline; } /* Line 126 */
-        .dummy27 { font-style: italic; } /* Line 127 */
-        .dummy28 { font-variant: small-caps; } /* Line 128 */
-        .dummy29 { text-indent: 10px; } /* Line 129 */
-        .dummy30 { white-space: nowrap; } /* Line 130 */
-        .dummy31 { overflow: hidden; } /* Line 131 */
-        .dummy32 { height: 40px; } /* Line 132 */
-        .dummy33 { width: 60%; } /* Line 133 */
-        .dummy34 { opacity: 0.8; } /* Line 134 */
-        .dummy35 { transition: all 0.6s; } /* Line 135 */
-        .dummy36 { position: absolute; } /* Line 136 */
-        .dummy37 { top: 15px; } /* Line 137 */
-        .dummy38 { left: 20px; } /* Line 138 */
-        .dummy39 { right: 25px; } /* Line 139 */
-        .dummy40 { bottom: 30px; } /* Line 140 */
-        .dummy41 { z-index: 15; } /* Line 141 */
-        .dummy42 { background-color: #dee2e6; } /* Line 142 */
-        .dummy43 { color: #495057; } /* Line 143 */
-        .dummy44 { border-color: #007bff; } /* Line 144 */
-        .dummy45 { font-size: 16px; } /* Line 145 */
-        .dummy46 { padding: 10px; } /* Line 146 */
-        .dummy47 { margin: 15px; } /* Line 147 */
-        .dummy48 { height: 50px; } /* Line 148 */
-        .dummy49 { width: 70%; } /* Line 149 */
-        .dummy50 { opacity: 0.7; } /* Line 150 */
     </style>
 </head>
 <body>
@@ -340,7 +217,6 @@
         </div>
     </div>
 
-    <!-- Hiển thị thông báo -->
     <c:if test="${not empty sessionScope.message}">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
                 ${sessionScope.message}
@@ -371,6 +247,29 @@
             </div>
             <div class="col-md-3"><input type="file" class="form-control" name="image"></div>
             <div class="col-md-2"><button type="submit" class="btn btn-primary w-100">Thêm món</button></div>
+        </div>
+    </form>
+
+    <form action="${pageContext.request.contextPath}/admin/menu-management" method="post" class="mb-4">
+        <input type="hidden" name="action" value="addCategory">
+        <div class="row g-3">
+            <div class="col-md-4"><input type="text" class="form-control" name="categoryName" placeholder="Tên danh mục mới" required></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-info w-100">Thêm danh mục</button></div>
+        </div>
+    </form>
+
+    <form action="${pageContext.request.contextPath}/admin/menu-management" method="post" class="mb-4">
+        <input type="hidden" name="action" value="deleteCategory">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <select name="categoryName" class="form-select" required>
+                    <option value="">Chọn danh mục để xóa</option>
+                    <c:forEach var="cat" items="${categories}">
+                        <option value="${cat}">${cat}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-md-2"><button type="submit" class="btn btn-danger w-100">Xóa danh mục</button></div>
         </div>
     </form>
 
@@ -447,26 +346,27 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.querySelectorAll('.delete-menu').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const menuId = button.getAttribute('data-menu-id');
-            const menuName = button.getAttribute('data-menu-name');
-            if (confirm(`Bạn có chắc muốn xóa món "${menuName}"?`)) {
-                window.location.href = button.getAttribute('href');
-            }
+    window.onload = function() {
+        document.querySelectorAll('.delete-menu').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const menuId = button.getAttribute('data-menu-id');
+                const menuName = button.getAttribute('data-menu-name');
+                if (confirm(`Bạn có chắc muốn xóa món "${menuName}"?`)) {
+                    window.location.href = button.getAttribute('href');
+                }
+            });
         });
-    });
 
-    // Tự động ẩn thông báo sau 3 giây
-    setTimeout(() => {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(alert => {
-            alert.style.transition = 'opacity 0.5s';
-            alert.style.opacity = '0';
-            setTimeout(() => alert.style.display = 'none', 500);
-        });
-    }, 3000);
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.style.display = 'none', 500);
+            });
+        }, 3000);
+    };
 </script>
 </body>
 </html>

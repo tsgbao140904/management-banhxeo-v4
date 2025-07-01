@@ -194,4 +194,38 @@ public class MenuDAO {
             System.out.println("Lỗi: Cập nhật menu thất bại - " + e.getMessage());
         }
     }
+
+    public void addCategory(String categoryName) {
+        Set<String> existingCategories = getAllCategories();
+        if (!existingCategories.contains(categoryName)) {
+            Menu sampleMenu = new Menu("Món mẫu " + categoryName, 10000.0, null, 0, categoryName);
+            sampleMenu.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+            addMenu(sampleMenu);
+            System.out.println("Thêm danh mục '" + categoryName + "' thành công với món mẫu!");
+        } else {
+            System.out.println("Danh mục '" + categoryName + "' đã tồn tại!");
+        }
+    }
+
+    // Phương thức mới để xóa danh mục
+    public void deleteCategory(String categoryName) {
+        Set<String> existingCategories = getAllCategories();
+        if (existingCategories.contains(categoryName)) {
+            String sql = "DELETE FROM menu WHERE category = ?";
+            try (Connection conn = DBConfig.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, categoryName);
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Xóa danh mục '" + categoryName + "' và các món liên quan thành công!");
+                } else {
+                    System.out.println("Không có món nào thuộc danh mục '" + categoryName + "' để xóa!");
+                }
+            } catch (SQLException e) {
+                System.out.println("Lỗi: Xóa danh mục '" + categoryName + "' thất bại - " + e.getMessage());
+            }
+        } else {
+            System.out.println("Danh mục '" + categoryName + "' không tồn tại!");
+        }
+    }
 }
