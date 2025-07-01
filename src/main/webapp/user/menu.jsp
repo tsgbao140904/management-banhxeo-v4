@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Thêm Font Awesome cho các icon -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -129,7 +130,7 @@
         }
     </style>
 </head>
-<body>
+<br>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/user/dashboard">Bánh Xèo</a>
@@ -174,6 +175,8 @@
     </div>
     <a href="${pageContext.request.contextPath}/user/cart" class="btn btn-success mt-3">Xem Giỏ Hàng</a>
 </div>
+</br>
+<jsp:include page="/WEB-INF/jsp/footer.jsp" /> <!-- Import footer.jsp -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.querySelectorAll('.add-to-cart').forEach(button => {

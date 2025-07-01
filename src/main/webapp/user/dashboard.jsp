@@ -5,6 +5,7 @@
 <head>
     <title>Dashboard User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Thêm Font Awesome cho các icon -->
     <style>
         /* Body with soft blue gradient */
         body {
@@ -26,7 +27,7 @@
 
         /* Navbar with subtle shine */
         .navbar {
-            background: #4682b4; /* Thay đổi sang SteelBlue */
+            background: #4682b4;
             padding: 10px 20px;
             box-shadow: 0 2px 10px rgba(70, 130, 180, 0.1);
             animation: navbarShine 6s infinite;
@@ -205,58 +206,6 @@
             50% { transform: scale(1.1); opacity: 0.8; }
             100% { transform: scale(1); opacity: 0.5; }
         }
-
-        /* Placeholder styles for 150 lines */
-        .dummy1 { color: #007bff; } /* Line 101 */
-        .dummy2 { background: #e9ecef; } /* Line 102 */
-        .dummy3 { border: 1px solid #dee2e6; } /* Line 103 */
-        .dummy4 { padding: 5px; } /* Line 104 */
-        .dummy5 { margin: 10px; } /* Line 105 */
-        .dummy6 { font-size: 14px; } /* Line 106 */
-        .dummy7 { height: 30px; } /* Line 107 */
-        .dummy8 { width: 50%; } /* Line 108 */
-        .dummy9 { opacity: 0.9; } /* Line 109 */
-        .dummy10 { transition: all 0.5s; } /* Line 110 */
-        .dummy11 { position: relative; } /* Line 111 */
-        .dummy12 { top: 5px; } /* Line 112 */
-        .dummy13 { left: 10px; } /* Line 113 */
-        .dummy14 { right: 15px; } /* Line 114 */
-        .dummy15 { bottom: 20px; } /* Line 115 */
-        .dummy16 { z-index: 10; } /* Line 116 */
-        .dummy17 { background-color: #f8f9fa; } /* Line 117 */
-        .dummy18 { color: #6c757d; } /* Line 118 */
-        .dummy19 { border-color: #ced4da; } /* Line 119 */
-        .dummy20 { font-family: 'Arial'; } /* Line 120 */
-        .dummy21 { text-align: center; } /* Line 121 */
-        .dummy22 { line-height: 1.5; } /* Line 122 */
-        .dummy23 { letter-spacing: 1px; } /* Line 123 */
-        .dummy24 { word-spacing: 2px; } /* Line 124 */
-        .dummy25 { text-transform: uppercase; } /* Line 125 */
-        .dummy26 { text-decoration: underline; } /* Line 126 */
-        .dummy27 { font-style: italic; } /* Line 127 */
-        .dummy28 { font-variant: small-caps; } /* Line 128 */
-        .dummy29 { text-indent: 10px; } /* Line 129 */
-        .dummy30 { white-space: nowrap; } /* Line 130 */
-        .dummy31 { overflow: hidden; } /* Line 131 */
-        .dummy32 { height: 40px; } /* Line 132 */
-        .dummy33 { width: 60%; } /* Line 133 */
-        .dummy34 { opacity: 0.8; } /* Line 134 */
-        .dummy35 { transition: all 0.6s; } /* Line 135 */
-        .dummy36 { position: absolute; } /* Line 136 */
-        .dummy37 { top: 15px; } /* Line 137 */
-        .dummy38 { left: 20px; } /* Line 138 */
-        .dummy39 { right: 25px; } /* Line 139 */
-        .dummy40 { bottom: 30px; } /* Line 140 */
-        .dummy41 { z-index: 15; } /* Line 141 */
-        .dummy42 { background-color: #dee2e6; } /* Line 142 */
-        .dummy43 { color: #495057; } /* Line 143 */
-        .dummy44 { border-color: #007bff; } /* Line 144 */
-        .dummy45 { font-size: 16px; } /* Line 145 */
-        .dummy46 { padding: 10px; } /* Line 146 */
-        .dummy47 { margin: 15px; } /* Line 147 */
-        .dummy48 { height: 50px; } /* Line 148 */
-        .dummy49 { width: 70%; } /* Line 149 */
-        .dummy50 { opacity: 0.7; } /* Line 150 */
     </style>
 </head>
 <body>
@@ -325,6 +274,8 @@
         </div>
     </div>
 </div>
+</br>
+<jsp:include page="/WEB-INF/jsp/footer.jsp" /> <!-- Import footer.jsp -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Tự động ẩn thông báo sau 3 giây
