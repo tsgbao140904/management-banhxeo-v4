@@ -63,11 +63,15 @@ DESCRIBE orders;
 ALTER TABLE order_details DROP FOREIGN KEY order_details_ibfk_1;
 ALTER TABLE order_details ADD FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE;
 
+ALTER TABLE cart ADD UNIQUE (user_id, menu_id);
+
+-- Truy vấn & Test dữ liệu
 Select* from user;
 SELECT * FROM cart WHERE user_id = 6;
 SHOW CREATE TABLE users;
 SHOW INDEX FROM users WHERE Key_name = 'email';
-
+SELECT * FROM cart WHERE user_id = 6;
+DELETE FROM cart WHERE user_id = 6;
 
 -- Cập nhật dữ liệu menu với danh mục
 INSERT INTO menu (name, price, image_url, category) VALUES
