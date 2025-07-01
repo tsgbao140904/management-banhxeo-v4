@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class OrderDAO {
     public void addToCart(int userId, int menuId, int quantity) {
-        String sql = "INSERT INTO cart (user_id, menu_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = VALUES(quantity)";
+        String sql = "INSERT INTO cart (user_id, menu_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)";
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -34,7 +34,7 @@ public class OrderDAO {
 
     public List<Menu> getCartItems(int userId) {
         List<Menu> cartItems = new ArrayList<>();
-        String sql = "SELECT m.*, c.quantity FROM menu m JOIN cart c ON m.menu_id = c.menu_id WHERE c.user_id = ?";
+        String sql = "SELECT m.*, SUM(c.quantity) as total_quantity FROM menu m JOIN cart c ON m.menu_id = c.menu_id WHERE c.user_id = ? GROUP BY m.menu_id, m.name, m.price, m.image_url, m.likes, m.category";
         try (Connection conn = DBConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -48,7 +48,7 @@ public class OrderDAO {
                             rs.getInt("likes"),
                             rs.getString("category")
                     );
-                    menu.setQuantity(rs.getInt("quantity"));
+                    menu.setQuantity(rs.getInt("total_quantity"));
                     cartItems.add(menu);
                 }
                 System.out.println("Lấy giỏ hàng thành công cho user ID " + userId + " với " + cartItems.size() + " món");
@@ -65,9 +65,8 @@ public class OrderDAO {
             conn = DBConfig.getConnection();
             conn.setAutoCommit(false);
 
-            // Kiểm tra tổng tiền trong giỏ hàng trước khi checkout
             double cartTotal = calculateCartTotal(conn, userId);
-            if (Math.abs(cartTotal - totalAmount) > 0.01) { // Kiểm tra sai số nhỏ
+            if (Math.abs(cartTotal - totalAmount) > 0.01) {
                 throw new SQLException("Tổng tiền không khớp với giỏ hàng: " + cartTotal + " vs " + totalAmount);
             }
 
@@ -94,7 +93,7 @@ public class OrderDAO {
                 try { conn.rollback(); System.out.println("Rollback thành công do lỗi: " + e.getMessage()); } catch (SQLException ex) { System.out.println("Rollback thất bại: " + ex.getMessage()); }
             }
             System.out.println("Lỗi: Thanh toán thất bại - " + e.getMessage());
-            throw new RuntimeException("Thanh toán thất bại: " + e.getMessage()); // Ném lỗi để servlet xử lý
+            throw new RuntimeException("Thanh toán thất bại: " + e.getMessage());
         } finally {
             if (conn != null) {
                 try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { System.out.println("Đóng kết nối thất bại: " + e.getMessage()); }
@@ -386,7 +385,6 @@ public class OrderDAO {
         return order;
     }
 
-    // Phương thức mới để xóa item khỏi giỏ hàng
     public void deleteCartItem(int userId, int menuId) {
         String sql = "DELETE FROM cart WHERE user_id = ? AND menu_id = ?";
         try (Connection conn = DBConfig.getConnection();
@@ -401,6 +399,28 @@ public class OrderDAO {
             }
         } catch (SQLException e) {
             System.out.println("Lỗi: Xóa món khỏi giỏ hàng thất bại - " + e.getMessage());
+        }
+    }
+
+    // Phương thức mới để cập nhật số lượng trong giỏ hàng
+    public void updateCartQuantity(int userId, int menuId, int quantity) {
+        String sql = "UPDATE cart SET quantity = ? WHERE user_id = ? AND menu_id = ?";
+        try (Connection conn = DBConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setInt(2, userId);
+            ps.setInt(3, menuId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Cập nhật số lượng thành công cho món ID " + menuId + " của user ID " + userId);
+                if (quantity <= 0) {
+                    deleteCartItem(userId, menuId); // Xóa nếu số lượng về 0
+                }
+            } else {
+                System.out.println("Cập nhật số lượng thất bại: Không tìm thấy món ID " + menuId);
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi: Cập nhật số lượng thất bại - " + e.getMessage());
         }
     }
 }

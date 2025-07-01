@@ -6,40 +6,21 @@
     <title>Giỏ Hàng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Body with soft blue gradient */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6);
+            background-color: #f8f9fa;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             color: #343a40;
-            animation: bgGlow 8s infinite ease-in-out;
         }
 
-        /* Background glow animation */
-        @keyframes bgGlow {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-
-        /* Navbar with subtle shine */
         .navbar {
-            background: #4682b4; /* Thay đổi sang SteelBlue */
+            background: #4682b4;
             padding: 10px 20px;
-            box-shadow: 0 2px 10px rgba(70, 130, 180, 0.1);
-            animation: navbarShine 6s infinite;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Navbar shine animation */
-        @keyframes navbarShine {
-            0% { box-shadow: 0 2px 10px rgba(70, 130, 180, 0.1); }
-            50% { box-shadow: 0 4px 15px rgba(70, 130, 180, 0.2); }
-            100% { box-shadow: 0 2px 10px rgba(70, 130, 180, 0.1); }
-        }
-
-        /* Navbar brand and links */
         .navbar-brand, .navbar-nav .nav-link {
             color: #ecf0f1;
             font-weight: 500;
@@ -48,248 +29,160 @@
 
         .navbar-brand:hover, .navbar-nav .nav-link:hover {
             color: #00b4d8;
-            text-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
         }
 
-        /* Container with gentle glow */
         .container {
             max-width: 1200px;
-            margin-top: 30px;
+            margin-top: 20px;
             flex: 1;
         }
 
-        /* Card with hover effect */
         .card {
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
-            background: rgba(255, 255, 255, 0.95);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: #fff;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2);
-        }
-
-        /* Card body styling */
         .card-body {
-            padding: 20px;
+            padding: 15px;
         }
 
-        /* Table styling */
         .table {
             background: #fff;
             border-radius: 8px;
-            overflow: hidden;
         }
 
         .table th {
             background: #007bff;
             color: #fff;
             text-align: center;
-            padding: 10px;
+            padding: 8px;
             font-weight: 600;
         }
 
         .table td {
             vertical-align: middle;
             text-align: center;
-            padding: 10px;
+            padding: 8px;
             border-top: 1px solid #dee2e6;
         }
 
-        /* Total amount styling */
         .total {
             font-size: 1.5rem;
             font-weight: bold;
             color: #28a745;
-            text-shadow: 0 0 3px rgba(40, 167, 69, 0.2);
             margin-top: 15px;
         }
 
-        /* Alert styling */
         .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            position: relative;
-            animation: fadeIn 0.5s ease;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
             border: 1px solid #dee2e6;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.1);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
         }
 
-        /* Alert success */
         .alert-success {
             background: #28a745;
             color: #fff;
         }
 
-        /* Alert danger */
         .alert-danger {
             background: #dc3545;
             color: #fff;
         }
 
-        /* Close button styling */
         .close-btn {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #fff;
             cursor: pointer;
             transition: color 0.3s ease;
         }
 
-        /* Close button hover */
         .close-btn:hover {
             color: #007bff;
         }
 
-        /* Animation for alerts */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Button styling */
         .btn {
-            background: linear-gradient(45deg, #007bff, #00b4d8);
+            background: #007bff;
             color: #fff;
             border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 1.1rem;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
         }
 
         .btn-danger {
-            background: linear-gradient(45deg, #dc3545, #c82333);
+            background: #dc3545;
         }
 
         .btn-success {
-            background: linear-gradient(45deg, #28a745, #218838);
+            background: #28a745;
         }
 
-        /* Button hover effect */
         .btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+            background: #0056b3;
         }
 
-        /* Button active effect */
         .btn:active {
-            transform: scale(0.98);
+            background: #004085;
         }
 
-        /* Textarea styling */
         .form-control[rows="3"] {
-            border: 2px solid #ced4da;
-            border-radius: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
             resize: vertical;
             min-height: 80px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .form-control[rows="3"]:focus {
             border-color: #007bff;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
             outline: none;
         }
 
-        /* Responsive design */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 1rem;
+            padding: 0;
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 max-width: 100%;
-                margin-top: 20px;
-                padding: 0 15px;
+                margin-top: 15px;
+                padding: 0 10px;
             }
             .card {
-                margin: 0 10px;
+                margin: 0 5px;
             }
             .table th, .table td {
                 font-size: 0.9rem;
-                padding: 8px;
+                padding: 6px;
             }
             .btn {
-                padding: 8px 15px;
-                font-size: 1rem;
+                padding: 4px 8px;
+                font-size: 0.9rem;
             }
         }
-
-        /* Decorative subtle glow */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -15%;
-            left: -15%;
-            width: 130%;
-            height: 130%;
-            background: radial-gradient(circle, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
-            animation: glowPulse 4s infinite;
-            z-index: -1;
-            border-radius: 10px;
-        }
-
-        /* Glow pulse animation */
-        @keyframes glowPulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-
-        /* Placeholder styles for 150 lines */
-        .dummy1 { color: #007bff; } /* Line 101 */
-        .dummy2 { background: #e9ecef; } /* Line 102 */
-        .dummy3 { border: 1px solid #dee2e6; } /* Line 103 */
-        .dummy4 { padding: 5px; } /* Line 104 */
-        .dummy5 { margin: 10px; } /* Line 105 */
-        .dummy6 { font-size: 14px; } /* Line 106 */
-        .dummy7 { height: 30px; } /* Line 107 */
-        .dummy8 { width: 50%; } /* Line 108 */
-        .dummy9 { opacity: 0.9; } /* Line 109 */
-        .dummy10 { transition: all 0.5s; } /* Line 110 */
-        .dummy11 { position: relative; } /* Line 111 */
-        .dummy12 { top: 5px; } /* Line 112 */
-        .dummy13 { left: 10px; } /* Line 113 */
-        .dummy14 { right: 15px; } /* Line 114 */
-        .dummy15 { bottom: 20px; } /* Line 115 */
-        .dummy16 { z-index: 10; } /* Line 116 */
-        .dummy17 { background-color: #f8f9fa; } /* Line 117 */
-        .dummy18 { color: #6c757d; } /* Line 118 */
-        .dummy19 { border-color: #ced4da; } /* Line 119 */
-        .dummy20 { font-family: 'Arial'; } /* Line 120 */
-        .dummy21 { text-align: center; } /* Line 121 */
-        .dummy22 { line-height: 1.5; } /* Line 122 */
-        .dummy23 { letter-spacing: 1px; } /* Line 123 */
-        .dummy24 { word-spacing: 2px; } /* Line 124 */
-        .dummy25 { text-transform: uppercase; } /* Line 125 */
-        .dummy26 { text-decoration: underline; } /* Line 126 */
-        .dummy27 { font-style: italic; } /* Line 127 */
-        .dummy28 { font-variant: small-caps; } /* Line 128 */
-        .dummy29 { text-indent: 10px; } /* Line 129 */
-        .dummy30 { white-space: nowrap; } /* Line 130 */
-        .dummy31 { overflow: hidden; } /* Line 131 */
-        .dummy32 { height: 40px; } /* Line 132 */
-        .dummy33 { width: 60%; } /* Line 133 */
-        .dummy34 { opacity: 0.8; } /* Line 134 */
-        .dummy35 { transition: all 0.6s; } /* Line 135 */
-        .dummy36 { position: absolute; } /* Line 136 */
-        .dummy37 { top: 15px; } /* Line 137 */
-        .dummy38 { left: 20px; } /* Line 138 */
-        .dummy39 { right: 25px; } /* Line 139 */
-        .dummy40 { bottom: 30px; } /* Line 140 */
-        .dummy41 { z-index: 15; } /* Line 141 */
-        .dummy42 { background-color: #dee2e6; } /* Line 142 */
-        .dummy43 { color: #495057; } /* Line 143 */
-        .dummy44 { border-color: #007bff; } /* Line 144 */
-        .dummy45 { font-size: 16px; } /* Line 145 */
-        .dummy46 { padding: 10px; } /* Line 146 */
-        .dummy47 { margin: 15px; } /* Line 147 */
-        .dummy48 { height: 50px; } /* Line 148 */
-        .dummy49 { width: 70%; } /* Line 149 */
-        .dummy50 { opacity: 0.7; } /* Line 150 */
     </style>
 </head>
 <body>
@@ -312,7 +205,6 @@
 <div class="container">
     <h2 class="mb-4 text-primary">Giỏ Hàng</h2>
 
-    <!-- Hiển thị thông báo -->
     <c:if test="${not empty sessionScope.message}">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
                 ${sessionScope.message}
@@ -345,9 +237,15 @@
                 <c:forEach var="item" items="${cartItems}">
                     <tr>
                         <td>${item.name}</td>
-                        <td>${item.quantity}</td>
+                        <td>
+                            <div class="quantity-controls">
+                                <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="decrease">-</button>
+                                <input type="number" class="quantity-input" id="quantity-${item.menuId}" value="${item.quantity}" readonly>
+                                <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="increase">+</button>
+                            </div>
+                        </td>
                         <td>${item.price} VNĐ</td>
-                        <td>${item.quantity * item.price} VNĐ</td>
+                        <td id="total-${item.menuId}">${item.quantity * item.price} VNĐ</td>
                         <c:set var="total" value="${total + (item.quantity * item.price)}" />
                         <td>
                             <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.menuId})">Xóa</button>
@@ -360,28 +258,52 @@
                 <label for="note" class="form-label">Ghi chú (nếu có):</label>
                 <textarea class="form-control" id="note" name="note" rows="3" placeholder="Nhập ghi chú cho đơn hàng (ví dụ: giao hàng nhanh, yêu cầu đặc biệt...)"></textarea>
             </div>
-            <p class="total text-success">Tổng cộng: ${total} VNĐ</p>
+            <p class="total text-success" id="grand-total">Tổng cộng: ${total} VNĐ</p>
             <button class="btn btn-success" onclick="checkout(${total})">Thanh Toán</button>
         </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function checkout(total) {
-        const note = document.getElementById('note').value;
-        if (confirm('Xác nhận thanh toán ' + total + ' VNĐ?\nGhi chú: ' + (note || 'Không có'))) {
-            fetch('${pageContext.request.contextPath}/user/checkout', {
+    let debounceTimeout;
+
+    async function addToCart(menuId, quantity = 1) {
+        try {
+            console.log("Gửi request thêm món: menuId=" + menuId + ", quantity=" + quantity);
+            const response = await fetch('${pageContext.request.contextPath}/user/cart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'total=' + total + '&note=' + encodeURIComponent(note) // Sửa cú pháp
-            }).then(response => {
-                if (response.ok) {
-                    alert('Thanh toán thành công, chờ admin duyệt!');
-                    window.location.href = '${pageContext.request.contextPath}/user/dashboard';
-                } else {
-                    response.text().then(text => alert('Thanh toán thất bại: ' + text));
-                }
-            }).catch(error => alert('Lỗi kết nối: ' + error));
+                body: 'action=add&menuId=' + menuId + '&quantity=' + quantity
+            });
+            const text = await response.text();
+            console.log("Phản hồi từ server: status=" + response.status + ", text=" + text);
+            if (response.ok) {
+                alert(text || "Thêm món thành công nhưng không có thông báo từ server!");
+                location.reload(); // Reload để cập nhật giỏ hàng
+            } else {
+                alert('Thêm món thất bại: ' + (text || 'Không nhận được thông tin lỗi từ server'));
+            }
+        } catch (error) {
+            console.error("Lỗi khi thêm món: ", error);
+            alert('Lỗi kết nối: ' + error.message);
+        }
+    }
+
+    async function checkout(total) {
+        const note = document.getElementById('note').value;
+        if (confirm('Xác nhận thanh toán ' + total + ' VNĐ?\nGhi chú: ' + (note || 'Không có'))) {
+            const response = await fetch('${pageContext.request.contextPath}/user/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'total=' + total + '&note=' + encodeURIComponent(note)
+            });
+            if (response.ok) {
+                alert('Thanh toán thành công, chờ admin duyệt!');
+                window.location.href = '${pageContext.request.contextPath}/user/dashboard';
+            } else {
+                const text = await response.text();
+                alert('Thanh toán thất bại: ' + text);
+            }
         }
     }
 
@@ -395,7 +317,7 @@
                 if (response.ok) {
                     response.text().then(text => {
                         alert(text);
-                        location.reload(); // Tải lại trang để cập nhật giỏ hàng
+                        location.reload();
                     });
                 } else {
                     alert('Xóa thất bại!');
@@ -404,15 +326,73 @@
         }
     }
 
-    // Tự động ẩn thông báo sau 3 giây
-    setTimeout(() => {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(alert => {
-            alert.style.transition = 'opacity 0.5s';
-            alert.style.opacity = '0';
-            setTimeout(() => alert.style.display = 'none', 500);
+    async function updateQuantity(menuId, newQuantity) {
+        try {
+            const response = await fetch('${pageContext.request.contextPath}/user/cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'action=update&menuId=' + menuId + '&quantity=' + newQuantity
+            });
+            if (response.ok) {
+                const newQty = parseInt(await response.text());
+                const quantityInput = document.getElementById('quantity-' + menuId);
+                const totalElement = document.getElementById('total-' + menuId);
+                const price = parseFloat(document.querySelector('#total-' + menuId).closest('tr').cells[2].textContent) || 0;
+                if (newQty === 0) {
+                    location.reload();
+                } else {
+                    quantityInput.value = newQty;
+                    totalElement.textContent = (newQty * price) + ' VNĐ';
+                    updateGrandTotal();
+                }
+            } else {
+                const text = await response.text();
+                alert('Cập nhật thất bại: ' + text);
+            }
+        } catch (error) {
+            alert('Lỗi kết nối: ' + error);
+        }
+    }
+
+    function debounce(func, delay) {
+        return function (...args) {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
+
+    document.querySelectorAll('.quantity-btn').forEach(button => {
+        button.addEventListener('click', debounce(async (e) => {
+            const menuId = e.target.getAttribute('data-menu-id');
+            const action = e.target.getAttribute('data-action');
+            const quantityInput = document.getElementById('quantity-' + menuId);
+            let newQuantity = parseInt(quantityInput.value);
+            if (action === 'decrease') newQuantity--;
+            else if (action === 'increase') newQuantity++;
+            if (newQuantity >= 0) await updateQuantity(menuId, newQuantity);
+        }, 50));
+    });
+
+    function updateGrandTotal() {
+        let grandTotal = 0;
+        document.querySelectorAll('.table tbody tr').forEach(row => {
+            const total = parseFloat(row.querySelector('td:nth-child(4)').textContent) || 0;
+            grandTotal += total;
         });
-    }, 3000);
+        document.getElementById('grand-total').textContent = 'Tổng cộng: ' + grandTotal + ' VNĐ';
+    }
+
+    window.onload = function() {
+        updateGrandTotal();
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.style.display = 'none', 500);
+            });
+        }, 3000);
+    };
 </script>
 </body>
 </html>

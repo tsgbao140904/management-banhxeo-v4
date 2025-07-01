@@ -21,12 +21,12 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public User(String username, String password, String role, String email) {
+    public User(String username, String password, String email, String role) {
         this.username = username;
         this.password = password;
-        this.role = role;
         this.email = email;
-        this.createdAt = new Date(); // Mặc định thời gian tạo là hiện tại
+        this.role = role;
+        this.createdAt = new Date(); // mặc định thời gian hiện tại
     }
 
     // Getters and setters

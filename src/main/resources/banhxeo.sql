@@ -63,6 +63,12 @@ DESCRIBE orders;
 ALTER TABLE order_details DROP FOREIGN KEY order_details_ibfk_1;
 ALTER TABLE order_details ADD FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE;
 
+Select* from user;
+SELECT * FROM cart WHERE user_id = 6;
+SHOW CREATE TABLE users;
+SHOW INDEX FROM users WHERE Key_name = 'email';
+
+
 -- Cập nhật dữ liệu menu với danh mục
 INSERT INTO menu (name, price, image_url, category) VALUES
                                                         ('Bánh Xèo Tôm Nhảy', 35000, 'banhxeo_tom.jpg', 'Bánh Xèo'),
@@ -90,6 +96,6 @@ INSERT INTO menu (name, price, image_url, category) VALUES
                                                         ('Tiger', 25000, 'tiger.jpg', 'Nước Uống'),
                                                         ('Heineken Silver', 35000, 'heineken_silver.jpg', 'Nước Uống'),
                                                         ('Khăn Lạnh', 2000, 'khanlanh.jpg', 'Khác');
-
+Select * from users;
 -- Insert admin account
-INSERT INTO users (username, password, role, email) VALUES ('admin', 'admin123', 'ADMIN', 'admin@example.com');
+INSERT INTO users (username, password, role, email) VALUES ('admin', 'admin123', 'ADMIN', 'admin@example.com')
