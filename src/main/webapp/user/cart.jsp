@@ -271,7 +271,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    let currentTotal = ${total}; // Lưu tổng tiền hiện tại
+    let currentTotal = ${total};
 
     async function checkout() {
         const note = document.getElementById('note').value;
@@ -326,15 +326,15 @@
                 totalElement.textContent = (newQty * price) + ' VNĐ';
                 updateGrandTotal();
                 if (parseInt(newQty) <= 0) {
-                    deleteItem(menuId); // Tự động xóa nếu số lượng về 0
+                    deleteItem(menuId);
                 }
             } else {
                 alert('Cập nhật thất bại!');
-                location.reload(); // Tải lại trang nếu thất bại để đồng bộ
+                location.reload();
             }
         } catch (error) {
             alert('Lỗi kết nối: ' + error.message);
-            location.reload(); // Tải lại trang nếu có lỗi
+            location.reload();
         }
     }
 
@@ -355,8 +355,8 @@
             if (action === 'decrease') newQuantity--;
             else if (action === 'increase') newQuantity++;
             if (newQuantity >= 0) await updateQuantity(menuId, newQuantity);
-            else quantityInput.value = 0; // Đảm bảo không âm
-        }, 50)); // Tăng delay để tránh xung đột
+            else quantityInput.value = 0;
+        }, 50));
     });
 
     function updateGrandTotal() {

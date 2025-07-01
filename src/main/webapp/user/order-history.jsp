@@ -8,40 +8,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Body with soft blue gradient */
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6);
+            background-color: #f8f9fa;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             color: #343a40;
-            animation: bgGlow 8s infinite ease-in-out;
         }
 
-        /* Background glow animation */
-        @keyframes bgGlow {
-            0% { background-position: 0% 0%; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
-        }
-
-        /* Navbar with subtle shine */
         .navbar {
-            background: #4682b4; /* SteelBlue */
+            background: #4682b4;
             padding: 10px 20px;
-            box-shadow: 0 2px 10px rgba(70, 130, 180, 0.1);
-            animation: navbarShine 6s infinite;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Navbar shine animation */
-        @keyframes navbarShine {
-            0% { box-shadow: 0 2px 10px rgba(70, 130, 180, 0.1); }
-            50% { box-shadow: 0 4px 15px rgba(70, 130, 180, 0.2); }
-            100% { box-shadow: 0 2px 10px rgba(70, 130, 180, 0.1); }
-        }
-
-        /* Navbar brand and links */
         .navbar-brand, .navbar-nav .nav-link {
             color: #ecf0f1;
             font-weight: 500;
@@ -50,26 +31,18 @@
 
         .navbar-brand:hover, .navbar-nav .nav-link:hover {
             color: #00b4d8;
-            text-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
         }
 
-        /* Container with gentle glow */
         .container {
             max-width: 1200px;
             margin-top: 30px;
             flex: 1;
         }
 
-        /* Table styling */
         .table {
             background: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .table:hover {
-            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .table th {
@@ -87,13 +60,12 @@
             border-top: 1px solid #dee2e6;
         }
 
-        /* Details table styling */
         .details-table {
             margin-top: 10px;
             font-size: 0.9em;
-            background: rgba(255, 255, 255, 0.95);
+            background: #fff;
             border-radius: 5px;
-            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
         }
 
         .details-table td {
@@ -101,30 +73,24 @@
             border: none;
         }
 
-        /* Alert styling */
         .alert {
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
-            position: relative;
-            animation: fadeIn 0.5s ease;
             border: 1px solid #dee2e6;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Alert success */
         .alert-success {
             background: #28a745;
             color: #fff;
         }
 
-        /* Alert danger */
         .alert-danger {
             background: #dc3545;
             color: #fff;
         }
 
-        /* Close button styling */
         .close-btn {
             font-size: 1.3rem;
             color: #fff;
@@ -132,18 +98,10 @@
             transition: color 0.3s ease;
         }
 
-        /* Close button hover */
         .close-btn:hover {
             color: #007bff;
         }
 
-        /* Animation for alerts */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Pagination styling */
         .pagination {
             justify-content: center;
         }
@@ -152,7 +110,6 @@
             color: #007bff;
             background: #fff;
             border: 1px solid #dee2e6;
-            transition: all 0.3s ease;
         }
 
         .page-item.active .page-link {
@@ -166,7 +123,6 @@
             color: #0056b3;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .container {
                 max-width: 100%;
@@ -181,79 +137,6 @@
                 font-size: 0.8em;
             }
         }
-
-        /* Decorative subtle glow */
-        .table::before {
-            content: '';
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
-            background: radial-gradient(circle, rgba(0, 123, 255, 0.1) 0%, transparent 70%);
-            animation: glowPulse 4s infinite;
-            z-index: -1;
-            border-radius: 10px;
-        }
-
-        /* Glow pulse animation */
-        @keyframes glowPulse {
-            0% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-
-        /* Placeholder styles for 150 lines */
-        .dummy1 { color: #007bff; } /* Line 101 */
-        .dummy2 { background: #e9ecef; } /* Line 102 */
-        .dummy3 { border: 1px solid #dee2e6; } /* Line 103 */
-        .dummy4 { padding: 5px; } /* Line 104 */
-        .dummy5 { margin: 10px; } /* Line 105 */
-        .dummy6 { font-size: 14px; } /* Line 106 */
-        .dummy7 { height: 30px; } /* Line 107 */
-        .dummy8 { width: 50%; } /* Line 108 */
-        .dummy9 { opacity: 0.9; } /* Line 109 */
-        .dummy10 { transition: all 0.5s; } /* Line 110 */
-        .dummy11 { position: relative; } /* Line 111 */
-        .dummy12 { top: 5px; } /* Line 112 */
-        .dummy13 { left: 10px; } /* Line 113 */
-        .dummy14 { right: 15px; } /* Line 114 */
-        .dummy15 { bottom: 20px; } /* Line 115 */
-        .dummy16 { z-index: 10; } /* Line 116 */
-        .dummy17 { background-color: #f8f9fa; } /* Line 117 */
-        .dummy18 { color: #6c757d; } /* Line 118 */
-        .dummy19 { border-color: #ced4da; } /* Line 119 */
-        .dummy20 { font-family: 'Arial'; } /* Line 120 */
-        .dummy21 { text-align: center; } /* Line 121 */
-        .dummy22 { line-height: 1.5; } /* Line 122 */
-        .dummy23 { letter-spacing: 1px; } /* Line 123 */
-        .dummy24 { word-spacing: 2px; } /* Line 124 */
-        .dummy25 { text-transform: uppercase; } /* Line 125 */
-        .dummy26 { text-decoration: underline; } /* Line 126 */
-        .dummy27 { font-style: italic; } /* Line 127 */
-        .dummy28 { font-variant: small-caps; } /* Line 128 */
-        .dummy29 { text-indent: 10px; } /* Line 129 */
-        .dummy30 { white-space: nowrap; } /* Line 130 */
-        .dummy31 { overflow: hidden; } /* Line 131 */
-        .dummy32 { height: 40px; } /* Line 132 */
-        .dummy33 { width: 60%; } /* Line 133 */
-        .dummy34 { opacity: 0.8; } /* Line 134 */
-        .dummy35 { transition: all 0.6s; } /* Line 135 */
-        .dummy36 { position: absolute; } /* Line 136 */
-        .dummy37 { top: 15px; } /* Line 137 */
-        .dummy38 { left: 20px; } /* Line 138 */
-        .dummy39 { right: 25px; } /* Line 139 */
-        .dummy40 { bottom: 30px; } /* Line 140 */
-        .dummy41 { z-index: 15; } /* Line 141 */
-        .dummy42 { background-color: #dee2e6; } /* Line 142 */
-        .dummy43 { color: #495057; } /* Line 143 */
-        .dummy44 { border-color: #007bff; } /* Line 144 */
-        .dummy45 { font-size: 16px; } /* Line 145 */
-        .dummy46 { padding: 10px; } /* Line 146 */
-        .dummy47 { margin: 15px; } /* Line 147 */
-        .dummy48 { height: 50px; } /* Line 148 */
-        .dummy49 { width: 70%; } /* Line 149 */
-        .dummy50 { opacity: 0.7; } /* Line 150 */
     </style>
 </head>
 <body>
@@ -276,7 +159,6 @@
 <div class="container">
     <h2 class="text-center mb-4">Lịch Sử Mua Hàng</h2>
 
-    <!-- Hiển thị thông báo -->
     <c:if test="${not empty sessionScope.message}">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
                 ${sessionScope.message}
@@ -341,7 +223,6 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Tự động ẩn thông báo sau 3 giây
     setTimeout(() => {
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(alert => {
