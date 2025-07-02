@@ -1,5 +1,5 @@
 .footer {
-    background: linear-gradient(90deg, #1A2B4B, #2C3E50);
+    background: linear-gradient(90deg, #284067, #2f6c98);
     color: #ffffff;
     padding: 48px 0;
     font-family: 'Inter', sans-serif;
@@ -90,7 +90,7 @@
 .social-icons {
     display: flex;
     justify-content: center;
-    gap: 10px; /* Increased spacing between social media icons */
+    gap: 24px; /* Increased spacing between social media icons */
     margin-top: 16px;
 }
 
