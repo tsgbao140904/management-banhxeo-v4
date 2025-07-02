@@ -100,8 +100,12 @@ public class OrderDAO {
             conn.setAutoCommit(false);
 
             double cartTotal = calculateCartTotal(conn, userId);
-            if (Math.abs(cartTotal - totalAmount) > 0.01 || cartTotal <= 0) {
-                throw new SQLException("Giỏ hàng trống hoặc tổng tiền không khớp: " + cartTotal + " vs " + totalAmount);
+            System.out.println("Checkout - User ID: " + userId + ", Total from client: " + totalAmount + ", Total from cart: " + cartTotal);
+            if (Math.abs(cartTotal - totalAmount) > 0.01) {
+                throw new SQLException("Tổng tiền không khớp: " + cartTotal + " (cart) vs " + totalAmount + " (client)");
+            }
+            if (cartTotal <= 0) {
+                throw new SQLException("Giỏ hàng trống, không thể thanh toán!");
             }
 
             String sqlOrder = "INSERT INTO orders (user_id, total_amount, status, order_date, note) VALUES (?, ?, ?, NOW(), ?)";

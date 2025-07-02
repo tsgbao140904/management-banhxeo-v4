@@ -29,10 +29,11 @@ public class CheckoutServlet extends HttpServlet {
                 response.getWriter().write("Thanh toán thành công, chờ admin duyệt!");
                 System.out.println("Thanh toán thành công cho user ID " + userId + " với tổng " + totalAmount + " và ghi chú: " + note);
             } catch (Exception e) {
-                request.getSession().setAttribute("error", "Thanh toán thất bại: " + e.getMessage());
+                String errorMsg = "Thanh toán thất bại: " + (e.getMessage() != null ? e.getMessage() : "Lỗi không xác định");
+                request.getSession().setAttribute("error", errorMsg);
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("Thanh toán thất bại: " + e.getMessage());
-                System.out.println("Lỗi thanh toán cho user ID " + userId + ": " + e.getMessage());
+                response.getWriter().write(errorMsg);
+                System.out.println("Lỗi thanh toán cho user ID " + userId + ": " + errorMsg);
             }
             response.sendRedirect(request.getContextPath() + "/user/cart"); // Quay lại giỏ hàng để cập nhật
         } else {

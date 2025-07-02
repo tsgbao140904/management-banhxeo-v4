@@ -102,17 +102,24 @@
 
     async function checkout() {
         const note = document.getElementById('note').value;
+        console.log("Attempting checkout with total: " + currentTotal + ", note: " + note);
+        if (currentTotal <= 0) {
+            alert('Giỏ hàng trống, không thể thanh toán!');
+            return;
+        }
         if (confirm('Xác nhận thanh toán ' + currentTotal + ' VNĐ?\nGhi chú: ' + (note || 'Không có'))) {
             const response = await fetch('${pageContext.request.contextPath}/user/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'total=' + currentTotal + '¬e=' + encodeURIComponent(note)
+                body: 'total=' + currentTotal + '&note=' + encodeURIComponent(note) // Sửa lỗi ký tự ¬e thành &note
             });
+            console.log("Fetch response status: " + response.status);
             if (response.ok) {
-                alert('Thanh toán thành công, chờ admin duyệt!');
+                alert('Thanh toán thành công! Vui lòng chờ admin duyệt.');
                 window.location.href = '${pageContext.request.contextPath}/user/dashboard';
             } else {
                 const text = await response.text();
+                console.log("Error response: " + text);
                 alert('Thanh toán thất bại: ' + text);
             }
         }
@@ -128,7 +135,7 @@
                 if (response.ok) {
                     response.text().then(text => {
                         alert(text);
-                        location.reload();
+                        location.reload(); // Reload trang sau khi xóa
                     });
                 } else {
                     alert('Xóa thất bại!');
@@ -148,12 +155,12 @@
                 const newQty = await response.text();
                 const quantityInput = document.getElementById('quantity-' + menuId);
                 const totalElement = document.getElementById('total-' + menuId);
-                const price = parseFloat(document.querySelector('#total-' + menuId).closest('tr').cells[2].textContent) || 0;
+                const price = parseFloat(document.querySelector('#total-' + menuId).closest('tr').cells[2].textContent.replace(' VNĐ', '')) || 0;
                 quantityInput.value = newQty;
                 totalElement.textContent = (newQty * price) + ' VNĐ';
                 updateGrandTotal();
                 if (parseInt(newQty) <= 0) {
-                    deleteItem(menuId);
+                    deleteItem(menuId); // Gọi deleteItem nếu số lượng về 0
                 }
             } else {
                 alert('Cập nhật thất bại!');
@@ -189,10 +196,13 @@
     function updateGrandTotal() {
         let grandTotal = 0;
         document.querySelectorAll('[id^="total-"]').forEach(element => {
-            grandTotal += parseFloat(element.textContent) || 0;
+            const value = parseFloat(element.textContent.replace(' VNĐ', '')) || 0;
+            if (isNaN(value)) console.error("Invalid total value: " + element.textContent);
+            grandTotal += value;
         });
         currentTotal = grandTotal;
         document.getElementById('grand-total').textContent = 'Tổng cộng: ' + grandTotal + ' VNĐ';
+        console.log("Updated grand total: " + grandTotal);
     }
 
     window.onload = function() {
