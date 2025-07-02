@@ -3,188 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Giỏ Hàng</title>
+    <title>Giỏ Hàng - Bánh Xèo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Thêm Font Awesome cho các icon -->
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #343a40;
-        }
-
-        .navbar {
-            background: #4682b4;
-            padding: 10px 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand, .navbar-nav .nav-link {
-            color: #ecf0f1;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-brand:hover, .navbar-nav .nav-link:hover {
-            color: #00b4d8;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin-top: 20px;
-            flex: 1;
-        }
-
-        .card {
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            background: #fff;
-        }
-
-        .card-body {
-            padding: 15px;
-        }
-
-        .table {
-            background: #fff;
-            border-radius: 8px;
-        }
-
-        .table th {
-            background: #007bff;
-            color: #fff;
-            text-align: center;
-            padding: 8px;
-            font-weight: 600;
-        }
-
-        .table td {
-            vertical-align: middle;
-            text-align: center;
-            padding: 8px;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .total {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #28a745;
-            margin-top: 15px;
-        }
-
-        .alert {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .alert-success {
-            background: #28a745;
-            color: #fff;
-        }
-
-        .alert-danger {
-            background: #dc3545;
-            color: #fff;
-        }
-
-        .close-btn {
-            font-size: 1.2rem;
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-btn:hover {
-            color: #007bff;
-        }
-
-        .btn {
-            background: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-        }
-
-        .btn-success {
-            background: #28a745;
-        }
-
-        .btn:hover {
-            background: #0056b3;
-        }
-
-        .btn:active {
-            background: #004085;
-        }
-
-        .form-control[rows="3"] {
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-control[rows="3"]:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .quantity-btn {
-            width: 30px;
-            height: 30px;
-            font-size: 1rem;
-            padding: 0;
-        }
-
-        .quantity-input {
-            width: 50px;
-            text-align: center;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                max-width: 100%;
-                margin-top: 15px;
-                padding: 0 10px;
-            }
-            .card {
-                margin: 0 5px;
-            }
-            .table th, .table td {
-                font-size: 0.9rem;
-                padding: 6px;
-            }
-            .btn {
-                padding: 4px 8px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/cart.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg">
@@ -240,16 +64,16 @@
                         <td>${item.name}</td>
                         <td>
                             <div class="quantity-controls">
-                                <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="decrease">-</button>
-                                <input type="number" class="quantity-input" id="quantity-${item.menuId}" value="${item.quantity}" min="0">
-                                <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="increase">+</button>
+                                <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="decrease" aria-label="Giảm số lượng món ${item.name}">-</button>
+                                <input type="number" class="quantity-input" id="quantity-${item.menuId}" value="${item.quantity}" min="0" aria-label="Số lượng món ${item.name}">
+                                <button class="btn btn-sm quantity-btn" data-menu-id="${item.menuId}" data-action="increase" aria-label="Tăng số lượng món ${item.name}">+</button>
                             </div>
                         </td>
                         <td>${item.price} VNĐ</td>
                         <td id="total-${item.menuId}">${item.quantity * item.price} VNĐ</td>
                         <c:set var="total" value="${total + (item.quantity * item.price)}" />
                         <td>
-                            <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.menuId})">Xóa</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteItem(${item.menuId})" aria-label="Xóa món ${item.name} khỏi giỏ hàng">Xóa</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -257,21 +81,21 @@
             </table>
             <div class="mb-3">
                 <label for="note" class="form-label">Ghi chú (nếu có):</label>
-                <textarea class="form-control" id="note" name="note" rows="3" placeholder="Nhập ghi chú cho đơn hàng (ví dụ: giao hàng nhanh, yêu cầu đặc biệt...)"></textarea>
+                <textarea class="form-control" id="note" name="note" rows="3" placeholder="Nhập ghi chú cho đơn hàng (ví dụ: giao hàng nhanh, yêu cầu đặc biệt...)" aria-label="Ghi chú đơn hàng"></textarea>
             </div>
             <p class="total text-success" id="grand-total">Tổng cộng: ${total} VNĐ</p>
             <c:if test="${total <= 0}">
                 <p class="text-danger">Giỏ hàng trống, không thể thanh toán!</p>
-                <button class="btn btn-success" onclick="checkout()" disabled>Thanh Toán</button>
+                <button class="btn btn-success" onclick="checkout()" disabled aria-label="Thanh toán (không khả dụng)">Thanh Toán</button>
             </c:if>
             <c:if test="${total > 0}">
-                <button class="btn btn-success" onclick="checkout()">Thanh Toán</button>
+                <button class="btn btn-success" onclick="checkout()" aria-label="Thanh toán đơn hàng">Thanh Toán</button>
             </c:if>
         </div>
     </div>
 </div>
-</br>
-<jsp:include page="/WEB-INF/jsp/footer.jsp" /> <!-- Import footer.jsp -->
+<br>
+<jsp:include page="/WEB-INF/jsp/footer.jsp" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let currentTotal = ${total};
@@ -282,7 +106,7 @@
             const response = await fetch('${pageContext.request.contextPath}/user/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'total=' + currentTotal + '&note=' + encodeURIComponent(note)
+                body: 'total=' + currentTotal + '¬e=' + encodeURIComponent(note)
             });
             if (response.ok) {
                 alert('Thanh toán thành công, chờ admin duyệt!');

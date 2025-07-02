@@ -1,0 +1,407 @@
+
+    /* General Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #F8FAFC, #E2E8F0, #D1D9E6);
+    min-height: 100vh;
+    display: flex;
+    color: #1A2B4B;
+    animation: bgGlow 10s infinite ease-in-out;
+}
+
+@keyframes bgGlow {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: linear-gradient(90deg, #1A2B4B, #2C3E50);
+    padding-top: 20px;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+    animation: sidebarShine 8s infinite ease-in-out;
+}
+
+@keyframes sidebarShine {
+    0% { box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15); }
+    50% { box-shadow: 2px 0 16px rgba(0, 0, 0, 0.2); }
+    100% { box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15); }
+}
+
+.sidebar .text-center h4 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.sidebar a.nav-link {
+    color: #ffffff;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar a.nav-link:hover {
+    color: #28A745;
+    transform: translateX(5px);
+}
+
+.sidebar a.nav-link.active {
+    color: #007BFF !important;
+    font-weight: 600 !important;
+    border-left: 3px solid #007BFF !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Content Styles */
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    flex: 1;
+    max-width: calc(100% - 250px);
+}
+
+h3.text-primary {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1A2B4B;
+    margin-bottom: 32px;
+    position: relative;
+    display: inline-block;
+}
+
+h3.text-primary::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background: #007BFF;
+    transition: width 0.3s ease;
+}
+
+h3.text-primary:hover::after {
+    width: 100%;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(45deg, #007BFF, #00B4D8);
+    color: #ffffff;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 15px;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #1A2B4B;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #495057;
+}
+
+.card.bg-success {
+    background: linear-gradient(45deg, #28A745, #218838);
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    font-weight: 600;
+}
+
+/* Chart Styles */
+.chart-container {
+    margin: 20px 0;
+    height: 300px;
+    position: relative;
+    border-radius: 12px;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 600;
+    color: #1A2B4B;
+}
+
+.form-control, .form-select {
+    border: 2px solid #ced4da;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+/* Table Styles */
+.table {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background: linear-gradient(45deg, #007BFF, #00B4D8);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-weight: 600;
+}
+
+.table td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #dee2e6;
+}
+
+.details-table {
+    margin-top: 10px;
+    font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 5px;
+}
+
+.details-table td {
+    padding: 5px;
+    border: none;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.alert-success {
+    background: linear-gradient(45deg, #28A745, #218838);
+    color: #ffffff;
+}
+
+.alert-danger {
+    background: linear-gradient(45deg, #DC3545, #C82333);
+    color: #ffffff;
+}
+
+.close-btn {
+    font-size: 1.3rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #007BFF;
+    transform: scale(1.1);
+}
+
+/* Button Styles */
+.btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #007BFF, #00B4D8);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #28A745, #218838);
+    border: none;
+}
+
+.btn-success:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #FFC107, #E0A800);
+    border: none;
+}
+
+.btn-warning:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, #DC3545, #C82333);
+    border: none;
+}
+
+.btn-danger:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-info {
+    background: linear-gradient(45deg, #17A2B8, #138496);
+    border: none;
+}
+
+.btn-info:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #6C757D, #5A6268);
+    border: none;
+}
+
+.btn-secondary:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Dropdown Styles */
+.dropdown button {
+    background: linear-gradient(45deg, #6C757D, #5A6268);
+    border: none;
+    color: #ffffff;
+    padding: 8px 15px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown button:hover {
+    background: linear-gradient(45deg, #5A6268, #4B5156);
+    transform: scale(1.03);
+}
+
+.dropdown-menu {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    color: #1A2B4B;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background: #E2E8F0;
+    color: #007BFF;
+}
+
+/* Pagination Styles */
+.pagination {
+    justify-content: center;
+}
+
+.page-item .page-link {
+    color: #007BFF;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(45deg, #007BFF, #00B4D8);
+    color: #ffffff;
+    border-color: #007BFF;
+}
+
+.page-item .page-link:hover {
+    background: #E2E8F0;
+    color: #0056B3;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    .content {
+        margin-left: 200px;
+        padding: 15px;
+        max-width: calc(100% - 200px);
+    }
+    h3.text-primary {
+        font-size: 24px;
+    }
+    .card {
+        margin-bottom: 16px;
+    }
+    .card-title {
+        font-size: 1.2rem;
+    }
+    .card-text {
+        font-size: 0.9rem;
+    }
+    .chart-container {
+        height: 250px;
+    }
+    .form-control, .form-select {
+        font-size: 0.9rem;
+    }
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+    .table th, .table td {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}

@@ -4,143 +4,15 @@
 <html>
 <head>
     <title>Lịch Sử Mua Hàng - Bánh Xèo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/order-history.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Thêm Font Awesome cho các icon -->
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #343a40;
-        }
-
-        .navbar {
-            background: #4682b4;
-            padding: 10px 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand, .navbar-nav .nav-link {
-            color: #ecf0f1;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-brand:hover, .navbar-nav .nav-link:hover {
-            color: #00b4d8;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin-top: 30px;
-            flex: 1;
-        }
-
-        .table {
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .table th {
-            background: #007bff;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            font-weight: 600;
-        }
-
-        .table td {
-            vertical-align: middle;
-            text-align: center;
-            padding: 10px;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .details-table {
-            margin-top: 10px;
-            font-size: 0.9em;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .details-table td {
-            padding: 5px;
-            border: none;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .alert-success {
-            background: #28a745;
-            color: #fff;
-        }
-
-        .alert-danger {
-            background: #dc3545;
-            color: #fff;
-        }
-
-        .close-btn {
-            font-size: 1.3rem;
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-btn:hover {
-            color: #007bff;
-        }
-
-        .pagination {
-            justify-content: center;
-        }
-
-        .page-item .page-link {
-            color: #007bff;
-            background: #fff;
-            border: 1px solid #dee2e6;
-        }
-
-        .page-item.active .page-link {
-            background: #007bff;
-            color: #fff;
-            border-color: #007bff;
-        }
-
-        .page-item .page-link:hover {
-            background: #e9ecef;
-            color: #0056b3;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                max-width: 100%;
-                margin-top: 20px;
-                padding: 0 15px;
-            }
-            .table th, .table td {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-            .details-table {
-                font-size: 0.8em;
-            }
-        }
-    </style>
 </head>
-<br>
+<body>
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/user/dashboard">Bánh Xèo</a>
@@ -191,7 +63,7 @@
             <tr>
                 <td>${order.orderId}</td>
                 <td>
-                    <table class="table details-table">
+                    <table class="details-table">
                         <c:forEach var="detail" items="${order.orderDetails}">
                             <tr>
                                 <td>${detail.menu.name}</td>
@@ -211,19 +83,19 @@
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <c:if test="${currentPage > 1}">
-                <li class="page-item"><a class="page-link" href="?page=${currentPage - 1}">Trước</a></li>
+                <li class="page-item"><a class="page-link" href="?page=${currentPage - 1}" aria-label="Trang trước">Trước</a></li>
             </c:if>
             <c:forEach begin="1" end="${totalPages}" var="i">
                 <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="?page=${i}">${i}</a></li>
             </c:forEach>
             <c:if test="${currentPage < totalPages}">
-                <li class="page-item"><a class="page-link" href="?page=${currentPage + 1}">Sau</a></li>
+                <li class="page-item"><a class="page-link" href="?page=${currentPage + 1}" aria-label="Trang sau">Sau</a></li>
             </c:if>
         </ul>
     </nav>
 </div>
-</br>
-<jsp:include page="/WEB-INF/jsp/footer.jsp" /> <!-- Import footer.jsp -->
+<br>
+<jsp:include page="/WEB-INF/jsp/footer.jsp" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     setTimeout(() => {
